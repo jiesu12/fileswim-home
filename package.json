@@ -1,0 +1,51 @@
+{
+  "name": "home",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "build": "webpack --mode production --config webpack.prod.js",
+    "watch": "webpack --watch --mode development --config webpack.dev.js",
+    "lint": "eslint --ext=ts,tsx src"
+  },
+  "keywords": [],
+  "author": "Jie Su",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^16.9.32",
+    "@types/react-dom": "^16.9.6",
+    "@types/react-redux": "^7.1.7",
+    "@types/react-router-dom": "^5.1.5",
+    "@typescript-eslint/eslint-plugin": "^3.0.0",
+    "@typescript-eslint/parser": "^3.0.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.5.0",
+    "eslint": "^7.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.2",
+    "html-webpack-plugin": "^4.3.0",
+    "node-sass": "^4.13.1",
+    "prettier": "^2.0.5",
+    "sass-loader": "^8.0.2",
+    "source-map-loader": "^0.2.4",
+    "style-loader": "^1.1.3",
+    "terser-webpack-plugin": "^3.0.1",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-merge": "^4.2.2"
+  },
+  "dependencies": {
+    "@jiesu12/fileswim-api": "^1.0.8",
+    "@jiesu12/history-dispatcher": "^1.1.0",
+    "@jiesu12/react-tab": "^1.1.0",
+    "@reduxjs/toolkit": "^1.3.6",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.2.0"
+  }
+}
