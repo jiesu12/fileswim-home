@@ -16,7 +16,15 @@ const getTimeSince = (timestamp: number): string => {
   diff = diff % HOUR
   const mins = Math.floor(diff / MINUTE)
   diff = diff % MINUTE
-  return `${days} days ${hours} hours ${mins} minutes ${diff} seconds`
+  if (days !== 0) {
+    return `${days} days ${hours} hours ${mins} minutes ${diff} seconds`
+  } else if (hours !== 0) {
+    return `${hours} hours ${mins} minutes ${diff} seconds`
+  } else if (mins !== 0) {
+    return `${mins} minutes ${diff} seconds`
+  } else {
+    return `${diff} seconds`
+  }
 }
 
 const Garage = () => {
