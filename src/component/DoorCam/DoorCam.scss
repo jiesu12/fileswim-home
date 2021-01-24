@@ -1,11 +1,29 @@
 .door-cam {
   display: flex;
   flex-direction: column;
-  align-items: center;
 
   .cam-control {
+    display: flex;
+    justify-content: center;
     .btn {
       margin: auto 5px auto 5px;
+    }
+    .show-cam {
+      margin-left: auto;
+    }
+    .vision-switch {
+      margin-left: auto;
+    }
+  }
+
+  .cam {
+    display: flex;
+    justify-content: center;
+    img {
+      max-width: 100vw;
+      height: calc(100vh - 90px);
+      object-fit: contain;
+      -o-object-fit: contain;
     }
   }
 }

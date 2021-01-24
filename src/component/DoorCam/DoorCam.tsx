@@ -15,15 +15,17 @@ const DoorCam = () => {
   return (
     <div className='door-cam'>
       <div className='cam-control'>
-        <button className='show-cam btn btn-primary' onClick={() => setShowCam(!showCam)}>
+        <button className='show-cam btn btn-sm btn-primary' onClick={() => setShowCam(!showCam)}>
           {showCam ? 'Hide' : 'Show'} Camera
         </button>
-        <button className='day-vision btn btn-primary' onClick={dayVision}>
-          Day Vision
-        </button>
-        <button className='night-vision btn btn-primary' onClick={nightVision}>
-          Night Vision
-        </button>
+        <div className='vision-switch'>
+          <button className='day-vision btn btn-sm btn-outline-success' onClick={dayVision}>
+            Day
+          </button>
+          <button className='night-vision btn btn-sm btn-outline-secondary' onClick={nightVision}>
+            Night
+          </button>
+        </div>
       </div>
       <div className='cam'>
         {showCam && <img src='https://doorcam.javaswim.com/stream/video.mjpeg' alt='image' />}
