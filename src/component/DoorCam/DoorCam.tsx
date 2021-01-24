@@ -15,14 +15,14 @@ const DoorCam = () => {
   return (
     <div className='door-cam'>
       <div className='cam-control'>
+        <button className='show-cam btn btn-primary' onClick={() => setShowCam(!showCam)}>
+          {showCam ? 'Hide' : 'Show'} Camera
+        </button>
         <button className='day-vision btn btn-primary' onClick={dayVision}>
           Day Vision
         </button>
         <button className='night-vision btn btn-primary' onClick={nightVision}>
           Night Vision
-        </button>
-        <button className='show-cam btn btn-primary' onClick={() => setShowCam(!showCam)}>
-          {showCam ? 'Hide' : 'Show'} Camera
         </button>
       </div>
       <div className='cam'>

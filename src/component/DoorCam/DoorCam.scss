@@ -1,4 +1,11 @@
 .door-cam {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  .cam-control {
+    .btn {
+      margin: auto 5px auto 5px;
+    }
+  }
 }
