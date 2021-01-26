@@ -31,7 +31,7 @@ const Garage = () => {
   const [status, setStatus] = React.useState<GarageStatus>(null)
   React.useEffect(() => {
     retrieveStatus()
-    const interval = setInterval(retrieveStatus, 2000)
+    const interval = setInterval(retrieveStatus, 5000)
     return () => clearInterval(interval)
     // re-create interval when status changes, so that the new status is in retrieveStatus closure.
     // eslint-disable-next-line react-hooks/exhaustive-deps
