@@ -2,14 +2,17 @@ import * as React from 'react'
 import './DoorCam.scss'
 import { getJson } from '@jiesu12/fileswim-api'
 
+const CAM_URL = 'https://cam1.javaswim.com'
+const CAM_CONTROL_URL = 'https://cam1control.javaswim.com'
+
 const DoorCam = () => {
   const [showCam, setShowCam] = React.useState<boolean>(false)
   const dayVision = () => {
-    getJson('https://doorcamcontrol.javaswim.com/irswitch/on')
+    getJson(`${CAM_CONTROL_URL}/irswitch/on`)
   }
 
   const nightVision = () => {
-    getJson('https://doorcamcontrol.javaswim.com/irswitch/off')
+    getJson(`${CAM_CONTROL_URL}/irswitch/off`)
   }
 
   return (
@@ -28,7 +31,7 @@ const DoorCam = () => {
         </div>
       </div>
       <div className='cam'>
-        {showCam && <img src='https://doorcam.javaswim.com/stream/video.mjpeg' alt='image' />}
+        {showCam && <img src={`${CAM_URL}/stream/video.mjpeg`} alt='image' />}
       </div>
     </div>
   )

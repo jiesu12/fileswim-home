@@ -2,6 +2,7 @@ import Tab from '@jiesu12/react-tab'
 import * as React from 'react'
 import DoorCam from '../DoorCam/DoorCam'
 import Garage from '../Garage/Garage'
+import Temperature from '../Temperature/Temperature'
 
 const Home = () => {
   return (
@@ -16,6 +17,11 @@ const Home = () => {
           {
             title: 'Garage',
             component: <Garage />,
+            rerender: true,
+          },
+          {
+            title: 'Temperature',
+            component: <Temperature />,
             rerender: true,
           },
         ]}

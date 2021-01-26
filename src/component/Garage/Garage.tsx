@@ -39,7 +39,7 @@ const Garage = () => {
 
   const retrieveStatus = () => {
     getJson('https://garage.javaswim.com/status').then((s: GarageStatus) => {
-      if (status === null || status.timestamp !== s.timestamp || status.status !== s.status) {
+      if (status === null || status.timestamp !== s.timestamp) {
         setStatus(s)
       }
     })
