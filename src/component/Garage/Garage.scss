@@ -4,11 +4,11 @@
   align-items: center;
 
   .title {
-    font-size: 3rem;
+    font-size: 2rem;
   }
 
   .status {
-    font-size: 5rem;
+    font-size: 4rem;
     font-weight: 600;
 
     &.status-close {
@@ -18,5 +18,9 @@
     &.status-open {
       color: red;
     }
+  }
+
+  .control-panel {
+    margin: 5px auto 5px auto;
   }
 }

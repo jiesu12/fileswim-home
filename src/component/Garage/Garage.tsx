@@ -2,6 +2,7 @@ import * as React from 'react'
 import { getJson } from '@jiesu12/fileswim-api'
 import './Garage.scss'
 import { GarageStatus } from '../../api/dto'
+import { timestampToStr } from '../../util/StringUtil'
 
 const MINUTE = 60
 const HOUR = 60 * 60
@@ -29,6 +30,8 @@ const getTimeSince = (timestamp: number): string => {
 
 const Garage = () => {
   const [status, setStatus] = React.useState<GarageStatus>(null)
+  const [history, setHistory] = React.useState<GarageStatus[]>([])
+  const [showHistory, setShowHistory] = React.useState<boolean>(false)
   React.useEffect(() => {
     retrieveStatus()
     const interval = setInterval(retrieveStatus, 5000)
@@ -49,11 +52,63 @@ const Garage = () => {
     return null
   }
 
+  const handleShowHistory = () => {
+    if (!showHistory) {
+      retrieveHistory()
+    }
+    setShowHistory(!showHistory)
+  }
+
+  const retrieveHistory = () => {
+    getJson('https://garage.javaswim.com/history').then((text: string) => {
+      const h =
+        '[' +
+        text
+          .split('\n')
+          .filter((l) => l.length !== 0)
+          .reverse()
+          .slice(0, 50)
+          .join(',') +
+        ']'
+      const json = JSON.parse(h)
+      setHistory(json)
+    })
+  }
+
+  const renderHistory = () => {
+    if (!showHistory) {
+      return null
+    }
+    return (
+      <table className='table history-table'>
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {history.map((h) => (
+            <tr key={h.timestamp}>
+              <td>{timestampToStr(h.timestamp)}</td>
+              <td>{h.status}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )
+  }
   return (
     <div className='garage'>
       <div className='title'>Garage door is</div>
       <div className={`status status-${status.status}`}>{status.status}</div>
       <div>{`for ${getTimeSince(status.timestamp)}`}</div>
+      <div className='control-panel'>
+        <button className='btn btn-sm btn-primary' onClick={handleShowHistory}>
+          {showHistory ? 'Hide' : 'Show'} History
+        </button>
+      </div>
+      {renderHistory()}
     </div>
   )
 }

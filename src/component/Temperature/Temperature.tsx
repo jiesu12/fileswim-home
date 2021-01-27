@@ -1,6 +1,7 @@
 import { getJson } from '@jiesu12/fileswim-api'
 import * as React from 'react'
 import { TemperatureStatus } from '../../api/dto'
+import { timestampToStr } from '../../util/StringUtil'
 import './Temperature.scss'
 
 const renderTemperature = (t: any): string => {
@@ -9,10 +10,6 @@ const renderTemperature = (t: any): string => {
 
 const renderHumidity = (h: any): string => {
   return `${Number.parseFloat(h).toFixed(1)}%`
-}
-
-const renderTimestamp = (t: number): string => {
-  return new Date(t * 1000).toLocaleString()
 }
 
 const getTimeClassName = (t: number): string => {
@@ -116,7 +113,7 @@ const Temperature = () => {
         <tbody>
           {history.map((h) => (
             <tr key={h.timestamp} className={getTimeClassName(h.timestamp)}>
-              <td>{renderTimestamp(h.timestamp)}</td>
+              <td>{timestampToStr(h.timestamp)}</td>
               <td>{renderTemperature(h.temperature)}</td>
               <td>{renderHumidity(h.humidity)}</td>
             </tr>
@@ -129,12 +126,14 @@ const Temperature = () => {
   const renderLegend = () => {
     return (
       <div className='legend'>
-        <div className='dawn'>Dawn</div>
-        <div className='day'>Day</div>
-        <div className='noon'>Noon</div>
-        <div className='dusk'>Dusk</div>
-        <div className='night'>Night</div>
-        <div className='midnight'>Midnight</div>
+        <div>
+          <div className='dawn'>Dawn</div>
+          <div className='day'>Day</div>
+          <div className='noon'>Noon</div>
+          <div className='dusk'>Dusk</div>
+          <div className='night'>Night</div>
+          <div className='midnight'>Midnight</div>
+        </div>
       </div>
     )
   }
@@ -150,16 +149,13 @@ const Temperature = () => {
       <div className='status'>
         Humidity: <b>{renderHumidity(status.humidity)}</b>
       </div>
-      <hr />
-      <div className='history'>
-        <div className='history-control'>
-          <button className='btn btn-sm btn-primary' onClick={handleShowHistory}>
-            {showHistory ? 'Hide' : 'Show'} History
-          </button>
-          {showHistory && renderLegend()}
-        </div>
-        {renderHistory()}
+      <div className='control-panel'>
+        <button className='btn btn-sm btn-primary' onClick={handleShowHistory}>
+          {showHistory ? 'Hide' : 'Show'} History
+        </button>
       </div>
+      {showHistory && renderLegend()}
+      {renderHistory()}
     </div>
   )
 }
