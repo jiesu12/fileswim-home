@@ -9,4 +9,56 @@
       color: blue;
     }
   }
+  .history {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .history-control {
+      display: flex;
+      position: relative;
+      min-width: 410px;
+
+      button {
+        position: absolute;
+        top: -3px;
+        left: 0;
+      }
+      .legend {
+        float: right;
+        margin-left: 140px;
+        div {
+          margin: auto 2px auto 2px;
+        }
+      }
+    }
+    .night {
+      background-color: darkgray;
+      color: white;
+    }
+    .midnight {
+      background-color: #555;
+      color: white;
+      font-weight: 400;
+    }
+    .day {
+      background-color: white;
+      color: black;
+    }
+    .noon {
+      background-color: white;
+      color: black;
+      font-weight: 400;
+    }
+    .dawn {
+      background-color: lightpink;
+      color: black;
+    }
+    .dusk {
+      background-color: deeppink;
+      color: white;
+    }
+    .legend {
+      display: flex;
+    }
+  }
 }
