@@ -4,6 +4,8 @@ import { TemperatureStatus } from '../../api/dto'
 import Timestamp from '../Timestamp/Timestamp'
 import './Temperature.scss'
 
+const HISTORY_NUM = 20
+
 const renderTemperature = (t: any): string => {
   return `${Number.parseFloat(t).toFixed(1)}\u00B0C`
 }
@@ -16,6 +18,7 @@ const Temperature = () => {
   const [status, setStatus] = React.useState<TemperatureStatus>(null)
   const [history, setHistory] = React.useState<TemperatureStatus[]>([])
   const [showHistory, setShowHistory] = React.useState<boolean>(false)
+  const [historyNum, setHistoryNum] = React.useState<number>(HISTORY_NUM)
   React.useEffect(() => {
     retrieveStatus()
     const interval = setInterval(retrieveStatus, 60000)
@@ -40,7 +43,6 @@ const Temperature = () => {
           .split('\n')
           .filter((l) => l.length !== 0)
           .reverse()
-          .slice(0, 50)
           .join(',') +
         ']'
       const json = JSON.parse(h)
@@ -73,7 +75,7 @@ const Temperature = () => {
           </tr>
         </thead>
         <tbody>
-          {history.map((h) => (
+          {history.slice(0, historyNum).map((h) => (
             <tr key={h.timestamp}>
               <td>
                 <Timestamp timestamp={h.timestamp} />
@@ -120,6 +122,14 @@ const Temperature = () => {
       </div>
       {showHistory && renderLegend()}
       {renderHistory()}
+      {showHistory && (
+        <button
+          className='btn btn-sm btn-primary'
+          onClick={() => setHistoryNum(historyNum + HISTORY_NUM)}
+        >
+          Show More
+        </button>
+      )}
     </div>
   )
 }

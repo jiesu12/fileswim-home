@@ -7,6 +7,7 @@ import Timestamp from '../Timestamp/Timestamp'
 const MINUTE = 60
 const HOUR = 60 * 60
 const DAY = 60 * 60 * 24
+const HISTORY_NUM = 20
 
 const getTimeSince = (timestamp: number): string => {
   const now = new Date().getTime()
@@ -32,6 +33,7 @@ const Garage = () => {
   const [status, setStatus] = React.useState<GarageStatus>(null)
   const [history, setHistory] = React.useState<GarageStatus[]>([])
   const [showHistory, setShowHistory] = React.useState<boolean>(false)
+  const [historyNum, setHistoryNum] = React.useState<number>(HISTORY_NUM)
   React.useEffect(() => {
     retrieveStatus()
     const interval = setInterval(retrieveStatus, 5000)
@@ -87,7 +89,7 @@ const Garage = () => {
           </tr>
         </thead>
         <tbody>
-          {history.map((h) => (
+          {history.slice(0, historyNum).map((h) => (
             <tr key={h.timestamp}>
               <td>
                 <Timestamp timestamp={h.timestamp} />
@@ -110,6 +112,14 @@ const Garage = () => {
         </button>
       </div>
       {renderHistory()}
+      {showHistory && (
+        <button
+          className='btn btn-sm btn-primary'
+          onClick={() => setHistoryNum(historyNum + HISTORY_NUM)}
+        >
+          Show More
+        </button>
+      )}
     </div>
   )
 }
