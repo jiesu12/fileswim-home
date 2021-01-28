@@ -2,7 +2,7 @@ import * as React from 'react'
 import { getJson } from '@jiesu12/fileswim-api'
 import './Garage.scss'
 import { GarageStatus } from '../../api/dto'
-import { timestampToStr } from '../../util/StringUtil'
+import Timestamp from '../Timestamp/Timestamp'
 
 const MINUTE = 60
 const HOUR = 60 * 60
@@ -67,7 +67,6 @@ const Garage = () => {
           .split('\n')
           .filter((l) => l.length !== 0)
           .reverse()
-          .slice(0, 50)
           .join(',') +
         ']'
       const json = JSON.parse(h)
@@ -90,8 +89,10 @@ const Garage = () => {
         <tbody>
           {history.map((h) => (
             <tr key={h.timestamp}>
-              <td>{timestampToStr(h.timestamp)}</td>
-              <td>{h.status}</td>
+              <td>
+                <Timestamp timestamp={h.timestamp} />
+              </td>
+              <td className={`status-${h.status}`}>{h.status}</td>
             </tr>
           ))}
         </tbody>

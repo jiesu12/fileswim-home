@@ -1,0 +1,87 @@
+.timestamp {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+
+  &.hour20,
+  &.hour21,
+  &.hour22,
+  &.hour23,
+  &.hour1,
+  &.hour2,
+  &.hour3,
+  &.hour4,
+  &.hour5 {
+    &::after {
+      content: 'Night';
+      width: 20px;
+      background-color: #666;
+      color: white;
+      margin-left: 5px;
+      padding: 2px;
+    }
+  }
+
+  &.hour0 {
+    &::after {
+      content: 'Midnight';
+      width: 20px;
+      background-color: black;
+      color: white;
+      margin-left: 5px;
+      padding: 2px;
+    }
+  }
+
+  &.hour12 {
+    &::after {
+      content: 'Noon';
+      width: 20px;
+      margin-left: 5px;
+      border: solid black 1px;
+      padding: 2px;
+    }
+  }
+
+  &.hour9,
+  &.hour10,
+  &.hour11,
+  &.hour13,
+  &.hour14,
+  &.hour15,
+  &.hour16 {
+    &::after {
+      content: 'Day';
+      width: 20px;
+      margin-left: 5px;
+      border: solid black 1px;
+      padding: 2px;
+      background-color: #f9f9f9;
+    }
+  }
+
+  &.hour6,
+  &.hour7,
+  &.hour8 {
+    &::after {
+      content: 'Dawn';
+      width: 20px;
+      background-color: lightpink;
+      color: white;
+      margin-left: 5px;
+      padding: 2px;
+    }
+  }
+
+  &.hour17,
+  &.hour18,
+  &.hour19 {
+    &::after {
+      content: 'Dusk';
+      width: 20px;
+      background-color: deeppink;
+      color: black;
+      margin-left: 5px;
+      padding: 2px;
+    }
+  }
+}

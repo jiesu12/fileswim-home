@@ -1,7 +1,7 @@
 import { getJson } from '@jiesu12/fileswim-api'
 import * as React from 'react'
 import { TemperatureStatus } from '../../api/dto'
-import { timestampToStr } from '../../util/StringUtil'
+import Timestamp from '../Timestamp/Timestamp'
 import './Temperature.scss'
 
 const renderTemperature = (t: any): string => {
@@ -10,44 +10,6 @@ const renderTemperature = (t: any): string => {
 
 const renderHumidity = (h: any): string => {
   return `${Number.parseFloat(h).toFixed(1)}%`
-}
-
-const getTimeClassName = (t: number): string => {
-  const hour = new Date(t * 1000).getHours()
-  switch (hour) {
-    case 20:
-    case 21:
-    case 22:
-    case 23:
-      return 'night'
-    case 0:
-      return 'midnight'
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-      return 'night'
-    case 6:
-    case 7:
-      return 'dawn'
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-      return 'day'
-    case 12:
-      return 'noon'
-    case 13:
-    case 14:
-    case 15:
-    case 16:
-    case 17:
-      return 'day'
-    case 18:
-    case 19:
-      return 'dusk'
-  }
 }
 
 const Temperature = () => {
@@ -112,8 +74,10 @@ const Temperature = () => {
         </thead>
         <tbody>
           {history.map((h) => (
-            <tr key={h.timestamp} className={getTimeClassName(h.timestamp)}>
-              <td>{timestampToStr(h.timestamp)}</td>
+            <tr key={h.timestamp}>
+              <td>
+                <Timestamp timestamp={h.timestamp} />
+              </td>
               <td>{renderTemperature(h.temperature)}</td>
               <td>{renderHumidity(h.humidity)}</td>
             </tr>
