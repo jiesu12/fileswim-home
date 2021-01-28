@@ -12,15 +12,8 @@
   .control-panel {
     display: flex;
   }
-  .legend {
-    display: flex;
-    align-self: flex-end;
-    div {
-      display: flex;
-      div {
-        margin: auto 2px auto 2px;
-      }
-    }
+  .history-table {
+    margin-top: 10px;
   }
   .night {
     background-color: darkgray;

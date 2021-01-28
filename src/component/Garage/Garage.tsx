@@ -1,33 +1,10 @@
-import * as React from 'react'
 import { getJson } from '@jiesu12/fileswim-api'
-import './Garage.scss'
+import * as React from 'react'
 import { GarageStatus } from '../../api/dto'
-import Timestamp from '../Timestamp/Timestamp'
+import './Garage.scss'
+import Timeline from './Timeline'
 
-const MINUTE = 60
-const HOUR = 60 * 60
-const DAY = 60 * 60 * 24
-const HISTORY_NUM = 20
-
-const getTimeSince = (timestamp: number): string => {
-  const now = new Date().getTime()
-  let diff = Math.floor(now / 1000) - timestamp
-  const days = Math.floor(diff / DAY)
-  diff = diff % DAY
-  const hours = Math.floor(diff / HOUR)
-  diff = diff % HOUR
-  const mins = Math.floor(diff / MINUTE)
-  diff = diff % MINUTE
-  if (days !== 0) {
-    return `${days} days ${hours} hours ${mins} minutes ${diff} seconds`
-  } else if (hours !== 0) {
-    return `${hours} hours ${mins} minutes ${diff} seconds`
-  } else if (mins !== 0) {
-    return `${mins} minutes ${diff} seconds`
-  } else {
-    return `${diff} seconds`
-  }
-}
+const HISTORY_NUM = 4
 
 const Garage = () => {
   const [status, setStatus] = React.useState<GarageStatus>(null)
@@ -80,32 +57,12 @@ const Garage = () => {
     if (!showHistory) {
       return null
     }
-    return (
-      <table className='table history-table'>
-        <thead>
-          <tr>
-            <th>Time</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {history.slice(0, historyNum).map((h) => (
-            <tr key={h.timestamp}>
-              <td>
-                <Timestamp timestamp={h.timestamp} />
-              </td>
-              <td className={`status-${h.status}`}>{h.status}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    )
+    return <Timeline history={history} num={historyNum} />
   }
   return (
     <div className='garage'>
       <div className='title'>Garage door is</div>
       <div className={`status status-${status.status}`}>{status.status}</div>
-      <div>{`for ${getTimeSince(status.timestamp)}`}</div>
       <div className='control-panel'>
         <button className='btn btn-sm btn-primary' onClick={handleShowHistory}>
           {showHistory ? 'Hide' : 'Show'} History

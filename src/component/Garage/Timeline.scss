@@ -1,0 +1,62 @@
+.timeline {
+  padding-top: 25px;
+  position: relative;
+  left: -145px;
+  padding-bottom: 10px;
+
+  .time-period {
+    position: relative;
+    min-height: 50px;
+    width: 310px;
+
+    .timestamp {
+      margin-right: 5px;
+      position: relative;
+      top: -10px;
+    }
+
+    &.status-open {
+      border-right: 10px solid blue;
+    }
+
+    &.status-close {
+      border-right: 10px solid red;
+    }
+
+    .length {
+      position: relative;
+      right: -315px;
+    }
+
+    &.super-short {
+      height: 50px;
+    }
+    &.very-short {
+      height: 60px;
+    }
+    &.short {
+      height: 70px;
+    }
+    &.medium {
+      height: 80px;
+    }
+    &.bit-long {
+      height: 90px;
+    }
+    &.long {
+      height: 100px;
+    }
+    &.very-long {
+      height: 110px;
+    }
+    &.day-long {
+      height: 150px;
+    }
+    &.week-long {
+      height: 200px;
+    }
+    &.infinity {
+      height: 300px;
+    }
+  }
+}

@@ -89,21 +89,6 @@ const Temperature = () => {
     )
   }
 
-  const renderLegend = () => {
-    return (
-      <div className='legend'>
-        <div>
-          <div className='dawn'>Dawn</div>
-          <div className='day'>Day</div>
-          <div className='noon'>Noon</div>
-          <div className='dusk'>Dusk</div>
-          <div className='night'>Night</div>
-          <div className='midnight'>Midnight</div>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className='temperature'>
       <div className='status'>
@@ -120,7 +105,6 @@ const Temperature = () => {
           {showHistory ? 'Hide' : 'Show'} History
         </button>
       </div>
-      {showHistory && renderLegend()}
       {renderHistory()}
       {showHistory && (
         <button
