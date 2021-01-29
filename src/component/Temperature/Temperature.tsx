@@ -6,8 +6,12 @@ import './Temperature.scss'
 
 const HISTORY_NUM = 20
 
+const toFahrenheit = (celsius: number) => {
+  return (celsius * 9) / 5 + 32
+}
+
 const renderTemperature = (t: any): string => {
-  return `${Number.parseFloat(t).toFixed(1)}\u00B0C`
+  return `${t.toFixed(1)}\u00B0C/${toFahrenheit(t).toFixed(1)}\u00B0F`
 }
 
 const renderHumidity = (h: any): string => {
