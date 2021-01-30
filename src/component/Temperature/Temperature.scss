@@ -8,6 +8,9 @@
     b {
       color: blue;
     }
+    @media only screen and (max-width: 760px) {
+      font-size: 1.3rem;
+    }
   }
   .control-panel {
     display: flex;
