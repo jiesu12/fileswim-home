@@ -1,4 +1,4 @@
-import { getJson } from '@jiesu12/fileswim-api'
+import { getJson, postJson } from '@jiesu12/fileswim-api'
 import * as React from 'react'
 import { GarageStatus } from '../../api/dto'
 import './Garage.scss'
@@ -38,6 +38,10 @@ const Garage = () => {
     setShowHistory(!showHistory)
   }
 
+  const handleDoorSwitch = () => {
+    postJson('https://garage.javaswim.com/doorswitch')
+  }
+
   const retrieveHistory = () => {
     getJson('https://garage.javaswim.com/history').then((text: string) => {
       const h =
@@ -62,16 +66,21 @@ const Garage = () => {
   return (
     <div className='garage'>
       <div className='title'>Garage door is</div>
-      <div className={`status status-${status.status}`}>{status.status}</div>
-      <div className='control-panel'>
-        <button className='btn btn-sm btn-primary' onClick={handleShowHistory}>
+      <div className='status-panel'>
+        <div className={`status status-${status.status}`}>{status.status}</div>
+        <button className='btn btn-sm btn-link history-btn' onClick={handleShowHistory}>
           {showHistory ? 'Hide' : 'Show'} History
+        </button>
+      </div>
+      <div className='control-panel'>
+        <button className='btn btn-danger btn-sm door-switch' onClick={handleDoorSwitch}>
+          Door Button
         </button>
       </div>
       {renderHistory()}
       {showHistory && (
         <button
-          className='btn btn-sm btn-primary'
+          className='btn btn-sm btn-outline-primary'
           onClick={() => setHistoryNum(historyNum + HISTORY_NUM)}
         >
           Show More

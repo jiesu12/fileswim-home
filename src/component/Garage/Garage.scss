@@ -7,20 +7,32 @@
     font-size: 2rem;
   }
 
-  .status {
-    font-size: 4rem;
-    font-weight: 600;
+  .status-panel {
+    position: relative;
 
-    &.status-close {
-      color: blue;
+    .status {
+      font-size: 4rem;
+      font-weight: 600;
+      color: black;
     }
 
-    &.status-open {
+    .status-open {
       color: red;
+      animation: blinker 1s linear infinite;
     }
   }
-
+  .history-btn {
+    position: absolute;
+    top: 9px;
+    right: -90px;
+  }
   .control-panel {
-    margin: 5px auto 5px auto;
+    margin-top: 15px;
+  }
+
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
   }
 }
