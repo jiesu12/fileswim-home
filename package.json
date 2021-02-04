@@ -41,7 +41,7 @@
   "dependencies": {
     "@jiesu12/fileswim-api": "^1.1.2",
     "@jiesu12/history-dispatcher": "^1.1.0",
-    "@jiesu12/react-tab": "^1.3.0",
+    "@jiesu12/react-tab": "^1.4.0",
     "@reduxjs/toolkit": "^1.3.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

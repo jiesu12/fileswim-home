@@ -1,16 +1,14 @@
 import Tab from '@jiesu12/react-tab'
 import * as React from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { TAB_DOOR_CAM, TAB_GARAGE, TAB_TEMPERATURE } from '../constant/constant'
 import DoorCam from '../DoorCam/DoorCam'
 import Garage from '../Garage/Garage'
 import Temperature from '../Temperature/Temperature'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from '../../reducer'
-import { setCurrentTitle } from '../../action/home'
-import { TAB_DOOR_CAM, TAB_GARAGE, TAB_TEMPERATURE } from '../constant/constant'
 
 const Home = () => {
-  const dispatch = useDispatch()
-  const { currentTab } = useSelector((store: RootState) => store.home)
+  const renderTabTitle = (title: string) => <Link to={`/fileswim/home?tab=${title}`}>{title}</Link>
+  const tab = new URLSearchParams(useLocation().search).get('tab') || TAB_DOOR_CAM
   return (
     <div className='smart-home'>
       <Tab
@@ -19,20 +17,22 @@ const Home = () => {
             title: TAB_DOOR_CAM,
             component: <DoorCam />,
             rerender: true,
+            titleRenderer: renderTabTitle,
           },
           {
             title: TAB_GARAGE,
             component: <Garage />,
             rerender: true,
+            titleRenderer: renderTabTitle,
           },
           {
             title: TAB_TEMPERATURE,
             component: <Temperature />,
             rerender: true,
+            titleRenderer: renderTabTitle,
           },
         ]}
-        currentTitle={currentTab}
-        setCurrentTitle={(title) => dispatch(setCurrentTitle(title))}
+        currentTitle={tab}
       />
     </div>
   )

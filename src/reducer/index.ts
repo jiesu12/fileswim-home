@@ -1,9 +1,8 @@
 import { applyMiddleware, combineReducers, createStore, Store } from 'redux'
 import thunk from 'redux-thunk'
-import home from './home'
 import modal from './modal'
 
-const rootReducer = combineReducers({ home, modal })
+const rootReducer = combineReducers({ modal })
 
 export type RootState = ReturnType<typeof rootReducer>
 
