@@ -21,10 +21,12 @@
       animation: blinker 1s linear infinite;
     }
   }
-  .history-btn {
+  .show-control {
     position: absolute;
     top: 9px;
     right: -90px;
+    display: flex;
+    flex-direction: column;
   }
   .control-panel {
     margin-top: 15px;

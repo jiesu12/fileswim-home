@@ -11,6 +11,7 @@ const Garage = () => {
   const [history, setHistory] = React.useState<GarageStatus[]>([])
   const [showHistory, setShowHistory] = React.useState<boolean>(false)
   const [historyNum, setHistoryNum] = React.useState<number>(HISTORY_NUM)
+  const [showCam, setShowCam] = React.useState<boolean>(false)
   React.useEffect(() => {
     retrieveStatus()
     const interval = setInterval(retrieveStatus, 5000)
@@ -38,8 +39,20 @@ const Garage = () => {
     setShowHistory(!showHistory)
   }
 
+  const handleShowCam = () => {
+    setShowCam(!showCam)
+  }
+
   const handleDoorSwitch = () => {
     postJson('https://garage.javaswim.com/doorswitch')
+  }
+
+  const renderCam = () => {
+    return (
+      <div className='cam-div'>
+        <img src='https://cam2.javaswim.com/stream/video.mjpeg' alt='image' />
+      </div>
+    )
   }
 
   const retrieveHistory = () => {
@@ -63,20 +76,27 @@ const Garage = () => {
     }
     return <Timeline history={history} num={historyNum} />
   }
+
   return (
     <div className='garage'>
       <div className='title'>Garage door is</div>
       <div className='status-panel'>
         <div className={`status status-${status.status}`}>{status.status}</div>
-        <button className='btn btn-sm btn-link history-btn' onClick={handleShowHistory}>
-          {showHistory ? 'Hide' : 'Show'} History
-        </button>
+        <div className='show-control'>
+          <button className='btn btn-sm btn-link history-btn' onClick={handleShowHistory}>
+            {showHistory ? 'Hide' : 'Show'} History
+          </button>
+          <button className='btn btn-sm btn-link cam-btn' onClick={handleShowCam}>
+            {showCam ? 'Hide' : 'Show'} Cam
+          </button>
+        </div>
       </div>
       <div className='control-panel'>
         <button className='btn btn-danger btn-sm door-switch' onClick={handleDoorSwitch}>
           Door Button
         </button>
       </div>
+      {showCam && renderCam()}
       {renderHistory()}
       {showHistory && (
         <button

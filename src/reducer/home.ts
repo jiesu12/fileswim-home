@@ -1,5 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { TAB_DOOR_CAM } from '../component/constant/constant'
+import { setCurrentTitle } from '../action/home'
 
 export interface HomeState {
   currentTab: string
@@ -10,5 +11,7 @@ const INIT_STATE: HomeState = {
 }
 
 export default createReducer(INIT_STATE, (builder) => {
-  console.log()
+  builder.addCase(setCurrentTitle, (state, action) => {
+    state.currentTab = action.payload
+  })
 })
