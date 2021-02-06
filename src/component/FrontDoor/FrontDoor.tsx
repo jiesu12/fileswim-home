@@ -1,11 +1,11 @@
 import * as React from 'react'
-import './DoorCam.scss'
+import './FrontDoor.scss'
 import { getJson } from '@jiesu12/fileswim-api'
 
 const CAM_URL = 'https://cam1.javaswim.com'
 const CAM_CONTROL_URL = 'https://cam1control.javaswim.com'
 
-const DoorCam = () => {
+const FrontDoor = () => {
   const [showCam, setShowCam] = React.useState<boolean>(false)
   const dayVision = () => {
     getJson(`${CAM_CONTROL_URL}/irswitch/on`)
@@ -16,7 +16,7 @@ const DoorCam = () => {
   }
 
   return (
-    <div className='door-cam'>
+    <div className='front-door'>
       <div className='cam-control'>
         <button className='show-cam btn btn-sm btn-primary' onClick={() => setShowCam(!showCam)}>
           {showCam ? 'Hide' : 'Show'} Camera
@@ -30,11 +30,9 @@ const DoorCam = () => {
           </button>
         </div>
       </div>
-      <div className='cam'>
-        {showCam && <img src={`${CAM_URL}/stream/video.mjpeg`} alt='image' />}
-      </div>
+      <div className='cam'>{showCam && <img src={`${CAM_URL}/?action=stream`} alt='image' />}</div>
     </div>
   )
 }
 
-export default DoorCam
+export default FrontDoor

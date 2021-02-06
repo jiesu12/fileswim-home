@@ -50,7 +50,7 @@ const Garage = () => {
   const renderCam = () => {
     return (
       <div className='cam-div'>
-        <img src='https://cam2.javaswim.com/stream/video.mjpeg' alt='image' />
+        <img src='https://cam2.javaswim.com/?action=stream' alt='image' />
       </div>
     )
   }
