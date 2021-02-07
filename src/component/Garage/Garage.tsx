@@ -44,7 +44,9 @@ const Garage = () => {
   }
 
   const handleDoorSwitch = () => {
-    postJson('https://garage.javaswim.com/doorswitch')
+    if (confirm('Press Garage Door Button?')) {
+      postJson('https://garage.javaswim.com/doorswitch')
+    }
   }
 
   const renderCam = () => {
