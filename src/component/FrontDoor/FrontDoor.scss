@@ -6,11 +6,12 @@
   .cam-control {
     display: flex;
     justify-content: center;
-    .btn {
-      margin: auto 5px auto 5px;
-    }
-    .show-cam {
-      margin-left: auto;
+    .play-div {
+      margin: 5px auto 5px;
+      .recordings {
+        font-size: 0.9rem;
+        margin-left: 10px;
+      }
     }
     .vision-switch {
       margin-left: auto;

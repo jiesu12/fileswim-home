@@ -18,9 +18,14 @@ const FrontDoor = () => {
   return (
     <div className='front-door'>
       <div className='cam-control'>
-        <button className='show-cam btn btn-sm btn-primary' onClick={() => setShowCam(!showCam)}>
-          {showCam ? 'Hide' : 'Show'} Camera
-        </button>
+        <div className='play-div'>
+          <button className='show-cam btn btn-sm btn-primary' onClick={() => setShowCam(!showCam)}>
+            {showCam ? 'Hide' : 'Show'} Camera
+          </button>
+          <a className='recordings' href='/fileswim/filemanager?instance=camera&path=frontdoor'>
+            Check Recordings
+          </a>
+        </div>
         <div className='vision-switch'>
           <button className='day-vision btn btn-sm btn-outline-success' onClick={dayVision}>
             Day
