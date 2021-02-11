@@ -5,6 +5,13 @@
 
   .title {
     font-size: 2rem;
+    position: relative;
+  }
+
+  .drop-down-menu {
+    position: absolute;
+    top: 18px;
+    left: -50px;
   }
 
   .status-panel {
@@ -32,7 +39,9 @@
     margin-top: 15px;
   }
   .cam-div {
-    max-width: 100vw;
+    img {
+      max-width: 100vw;
+    }
   }
 
   @keyframes blinker {

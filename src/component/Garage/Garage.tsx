@@ -1,4 +1,5 @@
 import { getJson, postJson } from '@jiesu12/fileswim-api'
+import DropdownMenu from '@jiesu12/react-dropdown-menu'
 import * as React from 'react'
 import { GarageStatus } from '../../api/dto'
 import './Garage.scss'
@@ -81,17 +82,29 @@ const Garage = () => {
 
   return (
     <div className='garage'>
-      <div className='title'>Garage door is</div>
+      <div className='title'>
+        Garage door is
+        <DropdownMenu
+          title='Menu'
+          showTitle={false}
+          rightHandSide={false}
+          menuItems={[
+            { key: 'History', onClick: handleShowHistory },
+            { key: 'Camera', onClick: handleShowCam },
+            {
+              key: 'Recordings',
+              display: (
+                <a className='menu-item' href='/fileswim/filemanager?instance=camera&path=garage'>
+                  Recordings
+                </a>
+              ),
+              onClick: null,
+            },
+          ]}
+        />
+      </div>
       <div className='status-panel'>
         <div className={`status status-${status.status}`}>{status.status}</div>
-        <div className='show-control'>
-          <button className='btn btn-sm btn-link history-btn' onClick={handleShowHistory}>
-            {showHistory ? 'Hide' : 'Show'} History
-          </button>
-          <button className='btn btn-sm btn-link cam-btn' onClick={handleShowCam}>
-            {showCam ? 'Hide' : 'Show'} Cam
-          </button>
-        </div>
       </div>
       <div className='control-panel'>
         <button className='btn btn-danger btn-sm door-switch' onClick={handleDoorSwitch}>
