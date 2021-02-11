@@ -96,9 +96,6 @@ const Temperature = () => {
   return (
     <div className='temperature'>
       <div className='status'>
-        Location: <b>basement</b>
-      </div>
-      <div className='status'>
         Temperature: <b>{renderTemperature(status.temperature)}</b>
       </div>
       <div className='status'>

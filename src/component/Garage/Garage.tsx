@@ -82,27 +82,25 @@ const Garage = () => {
 
   return (
     <div className='garage'>
-      <div className='title'>
-        Garage door is
-        <DropdownMenu
-          title='Menu'
-          showTitle={false}
-          rightHandSide={false}
-          menuItems={[
-            { key: 'History', onClick: handleShowHistory },
-            { key: 'Camera', onClick: handleShowCam },
-            {
-              key: 'Recordings',
-              display: (
-                <a className='menu-item' href='/fileswim/filemanager?instance=camera&path=garage'>
-                  Recordings
-                </a>
-              ),
-              onClick: null,
-            },
-          ]}
-        />
-      </div>
+      <DropdownMenu
+        title='Menu'
+        showTitle={false}
+        rightHandSide={false}
+        menuItems={[
+          { key: 'History', onClick: handleShowHistory },
+          { key: 'Camera', onClick: handleShowCam },
+          {
+            key: 'Recordings',
+            display: (
+              <a className='menu-item' href='/fileswim/filemanager?instance=camera&path=garage'>
+                Recordings
+              </a>
+            ),
+            onClick: null,
+          },
+        ]}
+      />
+      <div className='title'>Garage door is</div>
       <div className='status-panel'>
         <div className={`status status-${status.status}`}>{status.status}</div>
       </div>

@@ -1,4 +1,5 @@
 .garage {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,8 +11,8 @@
 
   .drop-down-menu {
     position: absolute;
-    top: 18px;
-    left: -50px;
+    top: 15px;
+    left: 20px;
   }
 
   .status-panel {
