@@ -1,19 +1,18 @@
+import { postJson } from '@jiesu12/fileswim-api'
+import DropdownMenu from '@jiesu12/react-dropdown-menu'
 import * as React from 'react'
 import './FrontDoor.scss'
-import { getJson } from '@jiesu12/fileswim-api'
-import DropdownMenu from '@jiesu12/react-dropdown-menu'
 
 const CAM_URL = 'https://cam1.javaswim.com'
-const CAM_CONTROL_URL = 'https://cam1control.javaswim.com'
 
 const FrontDoor = () => {
   const [showCam, setShowCam] = React.useState<boolean>(false)
   const dayVision = () => {
-    getJson(`${CAM_CONTROL_URL}/irswitch/on`)
+    postJson(`${CAM_URL}/irswitch/on`)
   }
 
   const nightVision = () => {
-    getJson(`${CAM_CONTROL_URL}/irswitch/off`)
+    postJson(`${CAM_URL}/irswitch/off`)
   }
 
   return (
@@ -41,7 +40,7 @@ const FrontDoor = () => {
           {showCam ? 'Hide' : 'Show'} Camera
         </button>
       </div>
-      <div className='cam'>{showCam && <img src={`${CAM_URL}/?action=stream`} alt='image' />}</div>
+      <div className='cam'>{showCam && <img src={`${CAM_URL}/stream`} alt='image' />}</div>
     </div>
   )
 }
