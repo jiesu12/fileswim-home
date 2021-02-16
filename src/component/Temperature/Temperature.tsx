@@ -11,6 +11,7 @@ import './Temperature.scss'
 
 const HISTORY_NUM = 20
 const THERMOSTAT_URL = 'https://thermostat.javaswim.com'
+const TEMPERATURE_PATTERN = /^\d{1,2}(\.\d)?$|^\d{1,2}\.?$|^$/
 
 const toFahrenheit = (celsius: number): number => {
   return (celsius * 9) / 5 + 32
@@ -114,6 +115,15 @@ const Temperature = () => {
     }
   }
 
+  const handleInputChange = (e: any) => {
+    const value = e.target.value
+    if (TEMPERATURE_PATTERN.test(value)) {
+      setNewTemp(value)
+    } else {
+      e.preventDefault()
+    }
+  }
+
   const isOffMode = () => {
     return thermostat.current_mode === 'Off'
   }
@@ -141,12 +151,12 @@ const Temperature = () => {
           {setterMode ? (
             <div className='setter-view'>
               <input
+                className='form-control temperature-input'
                 type='text'
-                pattern='[0-9]{0,2}[\.]?[0-9]{0,2}'
                 onKeyDown={isNumberKey}
                 value={newTemp}
-                onChange={(e: any) => setNewTemp(e.target.value)}
-                size={8}
+                onChange={handleInputChange}
+                size={5}
               />
               <button
                 className='btn btn-sm btn-default ok'
@@ -191,7 +201,7 @@ const Temperature = () => {
               if (confirm('Switch to Heat mode?'))
                 postJson(`${THERMOSTAT_URL}/mode/heat`).then(setThermostat)
             }}
-            disabled={thermostat.target_mode === 'Heat'}
+            disabled={thermostat.target_mode === 'Heat' || setterMode}
           >
             Heating
           </button>
@@ -203,7 +213,7 @@ const Temperature = () => {
               if (confirm('Swtich to Cool mode?'))
                 postJson(`${THERMOSTAT_URL}/mode/cool`).then(setThermostat)
             }}
-            disabled={thermostat.target_mode === 'Cool'}
+            disabled={thermostat.target_mode === 'Cool' || setterMode}
           >
             Cooling
           </button>
@@ -214,7 +224,7 @@ const Temperature = () => {
             onClick={() => {
               if (confirm('Swtich off?')) postJson(`${THERMOSTAT_URL}/mode/off`).then(setThermostat)
             }}
-            disabled={thermostat.target_mode === 'Off'}
+            disabled={thermostat.target_mode === 'Off' || setterMode}
           >
             Off
           </button>

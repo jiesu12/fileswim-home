@@ -12,6 +12,7 @@
   .status {
     display: flex;
     font-size: 1.8rem;
+    padding-left: 94px;
     .current-temperature {
       color: blue;
       font-weight: 400;
@@ -19,6 +20,9 @@
     .current-humidity {
       margin-left: 2rem;
       color: lightslategrey;
+      font-size: 1.3rem;
+      margin-top: auto;
+      margin-bottom: 3px;
     }
   }
 
@@ -58,19 +62,25 @@
       display: flex;
       justify-content: center;
       margin-bottom: 10px;
-      min-height: 33px;
+      min-height: 38px;
       button {
         margin-left: 5px;
       }
-      input:invalid {
-        border: red solid 3px;
-      }
       .setter-view {
+        display: flex;
+        padding-left: 90px;
+        svg {
+          width: 20px;
+          height: 20px;
+        }
         .ok svg {
           fill: green;
         }
         .cancel svg {
           fill: red;
+        }
+        .temperature-input {
+          width: 80px;
         }
       }
       .target-temperature {
@@ -88,6 +98,7 @@
           margin-left: 10px;
           color: gray;
           position: absolute;
+          margin-top: 7px;
         }
       }
     }
