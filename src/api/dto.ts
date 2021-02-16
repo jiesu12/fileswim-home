@@ -4,7 +4,7 @@ export interface GarageStatus {
 }
 
 export interface TemperatureStatus {
-  temperature: string
-  humidity: string
+  temperature: number
+  humidity: number
   timestamp: number
 }

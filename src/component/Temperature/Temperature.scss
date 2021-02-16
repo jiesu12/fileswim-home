@@ -25,7 +25,7 @@
   .thermostat {
     border: 1px solid;
     border-radius: 5px;
-    padding: 20px 10px 20px 10px;
+    padding: 20px 10px 5px 10px;
     min-width: 342px;
 
     .thermostat-status {
@@ -39,7 +39,17 @@
       }
       .run-status {
         position: absolute;
-        right: 10px;
+        right: 3px;
+        top: -10px;
+        &.run {
+          svg {
+            fill: cornflowerblue;
+            animation-name: spin;
+            animation-duration: 5000ms;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+          }
+        }
       }
     }
     .temperature-setter {
@@ -70,6 +80,12 @@
       button {
         margin: 3px;
       }
+    }
+    .notification-bar {
+      color: red;
+      font-size: 0.85rem;
+      padding-top: 10px;
+      min-height: 33px;
     }
   }
   .control-panel {
@@ -103,5 +119,13 @@
   .dusk {
     background-color: deeppink;
     color: white;
+  }
+  @keyframes spin {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
   }
 }

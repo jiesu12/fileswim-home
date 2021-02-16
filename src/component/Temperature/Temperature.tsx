@@ -1,26 +1,25 @@
 import { getJson, postJson } from '@jiesu12/fileswim-api'
+import DropdownMenu from '@jiesu12/react-dropdown-menu'
 import * as React from 'react'
 import { TemperatureStatus } from '../../api/dto'
 import Timestamp from '../Timestamp/Timestamp'
-import DropdownMenu from '@jiesu12/react-dropdown-menu'
 import './Temperature.scss'
+import Operation from '../icons/Operation'
+import Stop from '../icons/Stop'
 
 const HISTORY_NUM = 20
 const THERMOSTAT_URL = 'https://thermostat.javaswim.com'
 
-const toFahrenheit = (celsius: number) => {
+const toFahrenheit = (celsius: number): number => {
   return (celsius * 9) / 5 + 32
 }
 
-const renderTemperature = (t: any): string => {
-  if (t === null) {
-    return ''
-  }
-  return `${toFahrenheit(t).toFixed(1)}\u00B0F(${Number(t).toFixed(1)}\u00B0C)`
+const toCelsius = (fahrenheit: number): number => {
+  return ((fahrenheit - 32) * 5) / 9
 }
 
-const renderHumidity = (h: any): string => {
-  return `${Number.parseFloat(h).toFixed(1)}%`
+const renderHumidity = (h: number): string => {
+  return `${h.toFixed(1)}%`
 }
 
 interface Thermostat {
@@ -39,7 +38,8 @@ const Temperature = () => {
   const [historyNum, setHistoryNum] = React.useState<number>(HISTORY_NUM)
   const [thermostat, setThermostat] = React.useState<Thermostat>(null)
   const [setterMode, setSetterMode] = React.useState<boolean>(false)
-  const [newTemp, setNewTemp] = React.useState<number>(null)
+  const [newTemp, setNewTemp] = React.useState<string>(null) // use string to avoid long float number
+  const [celsius, setCelsius] = React.useState<boolean>(false)
 
   React.useEffect(() => {
     retrieveTemperature()
@@ -60,6 +60,13 @@ const Temperature = () => {
         setStatus(s)
       }
     })
+  }
+
+  const renderTemperature = (degree: number): string => {
+    if (degree === null) {
+      return ''
+    }
+    return celsius ? `${degree.toFixed(1)}\u00B0C` : `${toFahrenheit(degree).toFixed(1)}\u00B0F`
   }
 
   const retrieveThermostat = () => {
@@ -109,6 +116,16 @@ const Temperature = () => {
     return thermostat.current_mode === 'Off'
   }
 
+  const renderRunStatus = () => {
+    if (isOffMode()) {
+      return ''
+    } else if (thermostat.current_status === 'run') {
+      return <Operation />
+    } else {
+      return <Stop />
+    }
+  }
+
   const renderThermostat = () => {
     return (
       <div className='thermostat'>
@@ -116,7 +133,7 @@ const Temperature = () => {
           <div className='current-mode'>
             {`${thermostat.current_mode} ${isOffMode() ? '' : ' On'}`}
           </div>
-          <div className='run-status'>{isOffMode() ? '' : thermostat.current_status}</div>
+          <div className={`run-status ${thermostat.current_status}`}>{renderRunStatus()}</div>
         </div>
         <div className='temperature-setter'>
           {setterMode ? (
@@ -132,11 +149,15 @@ const Temperature = () => {
               <button
                 className='btn btn-sm btn-primary'
                 onClick={() => {
-                  postJson(`${THERMOSTAT_URL}/temperature/${newTemp}`).then(setThermostat)
+                  const t = celsius ? Number(newTemp) : toCelsius(Number(newTemp))
+                  postJson(`${THERMOSTAT_URL}/temperature/${t.toFixed(1)}`).then(setThermostat)
                   setSetterMode(false)
                 }}
               >
-                Set Temperature
+                Set
+              </button>
+              <button className='btn btn-sm btn-danger' onClick={() => setSetterMode(false)}>
+                Cancel
               </button>
             </div>
           ) : (
@@ -144,7 +165,11 @@ const Temperature = () => {
               className='target-temperature'
               onClick={() => {
                 setSetterMode(true)
-                setNewTemp(thermostat.target_temperature)
+                setNewTemp(
+                  celsius
+                    ? thermostat.target_temperature.toFixed(1)
+                    : toFahrenheit(thermostat.target_temperature).toFixed(1)
+                )
               }}
             >
               {isOffMode() ? '' : renderTemperature(thermostat.target_temperature)}
@@ -154,31 +179,44 @@ const Temperature = () => {
         <div className='mode-selection'>
           <button
             className={`btn btn-sm btn-${
-              thermostat.current_mode === 'Heat' ? 'secondary' : 'success'
+              thermostat.target_mode === 'Heat' ? 'secondary' : 'success'
             }`}
-            onClick={() => postJson(`${THERMOSTAT_URL}/mode/heat`).then(setThermostat)}
-            disabled={thermostat.current_mode === 'Heat'}
+            onClick={() => {
+              if (confirm('Switch to Heat mode?'))
+                postJson(`${THERMOSTAT_URL}/mode/heat`).then(setThermostat)
+            }}
+            disabled={thermostat.target_mode === 'Heat'}
           >
             Heating
           </button>
           <button
             className={`btn btn-sm btn-${
-              thermostat.current_mode === 'Cool' ? 'secondary' : 'success'
+              thermostat.target_mode === 'Cool' ? 'secondary' : 'success'
             }`}
-            onClick={() => postJson(`${THERMOSTAT_URL}/mode/cool`).then(setThermostat)}
-            disabled={thermostat.current_mode === 'Cool'}
+            onClick={() => {
+              if (confirm('Swtich to Cool mode?'))
+                postJson(`${THERMOSTAT_URL}/mode/cool`).then(setThermostat)
+            }}
+            disabled={thermostat.target_mode === 'Cool'}
           >
             Cooling
           </button>
           <button
             className={`btn btn-sm btn-${
-              thermostat.current_mode === 'Off' ? 'secondary' : 'success'
+              thermostat.target_mode === 'Off' ? 'secondary' : 'success'
             }`}
-            onClick={() => postJson(`${THERMOSTAT_URL}/mode/off`).then(setThermostat)}
-            disabled={thermostat.current_mode === 'Off'}
+            onClick={() => {
+              if (confirm('Swtich off?')) postJson(`${THERMOSTAT_URL}/mode/off`).then(setThermostat)
+            }}
+            disabled={thermostat.target_mode === 'Off'}
           >
             Off
           </button>
+        </div>
+        <div className='notification-bar'>
+          {thermostat.current_mode === thermostat.target_mode
+            ? ''
+            : `Will switch to ${thermostat.target_mode} mode after ${thermostat.current_mode} cycle is done.`}
         </div>
       </div>
     )
