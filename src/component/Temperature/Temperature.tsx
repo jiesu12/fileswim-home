@@ -154,7 +154,7 @@ const Temperature = () => {
         <div className='mode-selection'>
           <button
             className={`btn btn-sm btn-${
-              thermostat.current_mode === 'Heat' ? 'success' : 'secondary'
+              thermostat.current_mode === 'Heat' ? 'secondary' : 'success'
             }`}
             onClick={() => postJson(`${THERMOSTAT_URL}/mode/heat`).then(setThermostat)}
             disabled={thermostat.current_mode === 'Heat'}
@@ -163,7 +163,7 @@ const Temperature = () => {
           </button>
           <button
             className={`btn btn-sm btn-${
-              thermostat.current_mode === 'Cool' ? 'success' : 'secondary'
+              thermostat.current_mode === 'Cool' ? 'secondary' : 'success'
             }`}
             onClick={() => postJson(`${THERMOSTAT_URL}/mode/cool`).then(setThermostat)}
             disabled={thermostat.current_mode === 'Cool'}
@@ -172,7 +172,7 @@ const Temperature = () => {
           </button>
           <button
             className={`btn btn-sm btn-${
-              thermostat.current_mode === 'Off' ? 'success' : 'secondary'
+              thermostat.current_mode === 'Off' ? 'secondary' : 'success'
             }`}
             onClick={() => postJson(`${THERMOSTAT_URL}/mode/off`).then(setThermostat)}
             disabled={thermostat.current_mode === 'Off'}
