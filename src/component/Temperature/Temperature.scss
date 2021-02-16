@@ -41,9 +41,11 @@
         position: absolute;
         right: 3px;
         top: -10px;
+        svg {
+          fill: cornflowerblue;
+        }
         &.run {
           svg {
-            fill: cornflowerblue;
             animation-name: spin;
             animation-duration: 5000ms;
             animation-iteration-count: infinite;
@@ -63,14 +65,29 @@
       input:invalid {
         border: red solid 3px;
       }
+      .setter-view {
+        .ok svg {
+          fill: green;
+        }
+        .cancel svg {
+          fill: red;
+        }
+      }
       .target-temperature {
         font-size: 1.3rem;
         font-weight: 500;
         cursor: pointer;
         padding: 1px;
+        position: relative;
         &:hover {
           border: 1px lightgray solid;
           padding: 0px;
+        }
+        span {
+          font-size: 0.95rem;
+          margin-left: 10px;
+          color: gray;
+          position: absolute;
         }
       }
     }

@@ -2,10 +2,12 @@ import { getJson, postJson } from '@jiesu12/fileswim-api'
 import DropdownMenu from '@jiesu12/react-dropdown-menu'
 import * as React from 'react'
 import { TemperatureStatus } from '../../api/dto'
-import Timestamp from '../Timestamp/Timestamp'
-import './Temperature.scss'
+import CheckMark from '../icons/CheckMark'
+import Cross from '../icons/Cross'
 import Operation from '../icons/Operation'
 import Stop from '../icons/Stop'
+import Timestamp from '../Timestamp/Timestamp'
+import './Temperature.scss'
 
 const HISTORY_NUM = 20
 const THERMOSTAT_URL = 'https://thermostat.javaswim.com'
@@ -137,7 +139,7 @@ const Temperature = () => {
         </div>
         <div className='temperature-setter'>
           {setterMode ? (
-            <div>
+            <div className='setter-view'>
               <input
                 type='text'
                 pattern='[0-9]{0,2}[\.]?[0-9]{0,2}'
@@ -147,17 +149,20 @@ const Temperature = () => {
                 size={8}
               />
               <button
-                className='btn btn-sm btn-primary'
+                className='btn btn-sm btn-default ok'
                 onClick={() => {
                   const t = celsius ? Number(newTemp) : toCelsius(Number(newTemp))
                   postJson(`${THERMOSTAT_URL}/temperature/${t.toFixed(1)}`).then(setThermostat)
                   setSetterMode(false)
                 }}
               >
-                Set
+                <CheckMark />
               </button>
-              <button className='btn btn-sm btn-danger' onClick={() => setSetterMode(false)}>
-                Cancel
+              <button
+                className='btn btn-sm btn-default cancel'
+                onClick={() => setSetterMode(false)}
+              >
+                <Cross />
               </button>
             </div>
           ) : (
@@ -173,6 +178,7 @@ const Temperature = () => {
               }}
             >
               {isOffMode() ? '' : renderTemperature(thermostat.target_temperature)}
+              <span>Set</span>
             </div>
           )}
         </div>
@@ -256,7 +262,10 @@ const Temperature = () => {
         title='Menu'
         showTitle={false}
         rightHandSide={false}
-        menuItems={[{ key: 'History', onClick: handleShowHistory }]}
+        menuItems={[
+          { key: 'History', onClick: handleShowHistory },
+          { key: 'Switch Degree', onClick: () => setCelsius(!celsius) },
+        ]}
       />
       <div className='status'>
         <div className='current-temperature'>{renderTemperature(status.temperature)}</div>
