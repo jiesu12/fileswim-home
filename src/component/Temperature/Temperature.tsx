@@ -1,21 +1,35 @@
-import { getJson } from '@jiesu12/fileswim-api'
+import { getJson, postJson } from '@jiesu12/fileswim-api'
 import * as React from 'react'
 import { TemperatureStatus } from '../../api/dto'
 import Timestamp from '../Timestamp/Timestamp'
+import DropdownMenu from '@jiesu12/react-dropdown-menu'
 import './Temperature.scss'
 
 const HISTORY_NUM = 20
+const THERMOSTAT_URL = 'https://thermostat.javaswim.com'
 
 const toFahrenheit = (celsius: number) => {
   return (celsius * 9) / 5 + 32
 }
 
 const renderTemperature = (t: any): string => {
-  return `${t.toFixed(1)}\u00B0C/${toFahrenheit(t).toFixed(1)}\u00B0F`
+  if (t === null) {
+    return ''
+  }
+  return `${toFahrenheit(t).toFixed(1)}\u00B0F(${Number(t).toFixed(1)}\u00B0C)`
 }
 
 const renderHumidity = (h: any): string => {
   return `${Number.parseFloat(h).toFixed(1)}%`
+}
+
+interface Thermostat {
+  target_mode: string
+  current_mode: string
+  target_temperature: number
+  current_temperature: number
+  current_status: string
+  target_status: string
 }
 
 const Temperature = () => {
@@ -23,20 +37,33 @@ const Temperature = () => {
   const [history, setHistory] = React.useState<TemperatureStatus[]>([])
   const [showHistory, setShowHistory] = React.useState<boolean>(false)
   const [historyNum, setHistoryNum] = React.useState<number>(HISTORY_NUM)
+  const [thermostat, setThermostat] = React.useState<Thermostat>(null)
+  const [setterMode, setSetterMode] = React.useState<boolean>(false)
+  const [newTemp, setNewTemp] = React.useState<number>(null)
+
   React.useEffect(() => {
-    retrieveStatus()
-    const interval = setInterval(retrieveStatus, 60000)
-    return () => clearInterval(interval)
+    retrieveTemperature()
+    retrieveThermostat()
+    const temperatureInterval = setInterval(retrieveTemperature, 30000)
+    const thermostatInterval = setInterval(retrieveThermostat, 2000)
+    return () => {
+      clearInterval(temperatureInterval)
+      clearInterval(thermostatInterval)
+    }
     // re-create interval when status changes, so that the new status is in retrieveStatus closure.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status])
 
-  const retrieveStatus = () => {
+  const retrieveTemperature = () => {
     getJson('https://temperature.javaswim.com/status').then((s: TemperatureStatus) => {
       if (status === null || status.timestamp !== s.timestamp) {
         setStatus(s)
       }
     })
+  }
+
+  const retrieveThermostat = () => {
+    getJson(THERMOSTAT_URL).then(setThermostat)
   }
 
   const retrieveHistory = () => {
@@ -63,6 +90,98 @@ const Temperature = () => {
       retrieveHistory()
     }
     setShowHistory(!showHistory)
+  }
+
+  const isNumberKey = (evt: any) => {
+    const charCode = evt.which ? evt.which : evt.keyCode
+    if (
+      charCode != 190 &&
+      charCode != 37 &&
+      charCode != 39 &&
+      charCode != 8 &&
+      (charCode < 48 || charCode > 57)
+    ) {
+      evt.preventDefault()
+    }
+  }
+
+  const isOffMode = () => {
+    return thermostat.current_mode === 'Off'
+  }
+
+  const renderThermostat = () => {
+    return (
+      <div className='thermostat'>
+        <div className='thermostat-status'>
+          <div className='current-mode'>
+            {`${thermostat.current_mode} ${isOffMode() ? '' : ' On'}`}
+          </div>
+          <div className='run-status'>{isOffMode() ? '' : thermostat.current_status}</div>
+        </div>
+        <div className='temperature-setter'>
+          {setterMode ? (
+            <div>
+              <input
+                type='text'
+                pattern='[0-9]{0,2}[\.]?[0-9]{0,2}'
+                onKeyDown={isNumberKey}
+                value={newTemp}
+                onChange={(e: any) => setNewTemp(e.target.value)}
+                size={8}
+              />
+              <button
+                className='btn btn-sm btn-primary'
+                onClick={() => {
+                  postJson(`${THERMOSTAT_URL}/temperature/${newTemp}`).then(setThermostat)
+                  setSetterMode(false)
+                }}
+              >
+                Set Temperature
+              </button>
+            </div>
+          ) : (
+            <div
+              className='target-temperature'
+              onClick={() => {
+                setSetterMode(true)
+                setNewTemp(thermostat.target_temperature)
+              }}
+            >
+              {isOffMode() ? '' : renderTemperature(thermostat.target_temperature)}
+            </div>
+          )}
+        </div>
+        <div className='mode-selection'>
+          <button
+            className={`btn btn-sm btn-${
+              thermostat.current_mode === 'Heat' ? 'success' : 'secondary'
+            }`}
+            onClick={() => postJson(`${THERMOSTAT_URL}/mode/heat`).then(setThermostat)}
+            disabled={thermostat.current_mode === 'Heat'}
+          >
+            Heating
+          </button>
+          <button
+            className={`btn btn-sm btn-${
+              thermostat.current_mode === 'Cool' ? 'success' : 'secondary'
+            }`}
+            onClick={() => postJson(`${THERMOSTAT_URL}/mode/cool`).then(setThermostat)}
+            disabled={thermostat.current_mode === 'Cool'}
+          >
+            Cooling
+          </button>
+          <button
+            className={`btn btn-sm btn-${
+              thermostat.current_mode === 'Off' ? 'success' : 'secondary'
+            }`}
+            onClick={() => postJson(`${THERMOSTAT_URL}/mode/off`).then(setThermostat)}
+            disabled={thermostat.current_mode === 'Off'}
+          >
+            Off
+          </button>
+        </div>
+      </div>
+    )
   }
 
   const renderHistory = () => {
@@ -95,17 +214,17 @@ const Temperature = () => {
 
   return (
     <div className='temperature'>
+      <DropdownMenu
+        title='Menu'
+        showTitle={false}
+        rightHandSide={false}
+        menuItems={[{ key: 'History', onClick: handleShowHistory }]}
+      />
       <div className='status'>
-        Temperature: <b>{renderTemperature(status.temperature)}</b>
+        <div className='current-temperature'>{renderTemperature(status.temperature)}</div>
+        <div className='current-humidity'>{renderHumidity(status.humidity)}</div>
       </div>
-      <div className='status'>
-        Humidity: <b>{renderHumidity(status.humidity)}</b>
-      </div>
-      <div className='control-panel'>
-        <button className='btn btn-sm btn-primary' onClick={handleShowHistory}>
-          {showHistory ? 'Hide' : 'Show'} History
-        </button>
-      </div>
+      {thermostat && renderThermostat()}
       {renderHistory()}
       {showHistory && (
         <button
