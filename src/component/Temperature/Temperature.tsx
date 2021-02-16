@@ -273,8 +273,8 @@ const Temperature = () => {
         showTitle={false}
         rightHandSide={false}
         menuItems={[
-          { key: 'History', onClick: handleShowHistory },
-          { key: 'Switch Degree', onClick: () => setCelsius(!celsius) },
+          { key: 'Temperature History', onClick: handleShowHistory },
+          { key: 'Switch Unit', onClick: () => setCelsius(!celsius) },
         ]}
       />
       <div className='status'>
