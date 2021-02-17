@@ -11,7 +11,7 @@ import './Temperature.scss'
 
 const HISTORY_NUM = 20
 const THERMOSTAT_URL = 'https://thermostat.javaswim.com'
-const TEMPERATURE_PATTERN = /^\d{1,2}(\.\d)?$|^\d{1,2}\.?$|^$/
+const TEMPERATURE_PATTERN = /^\d{0,2}$/
 
 const toFahrenheit = (celsius: number): number => {
   return (celsius * 9) / 5 + 32
@@ -32,6 +32,13 @@ interface Thermostat {
   current_temperature: number
   current_status: string
   target_status: string
+  over_buffer_temperature: number
+  under_buffer_temperature: number
+  min_run_time: number
+  max_run_time: number
+  min_stop_time: number
+  current_time: number
+  room: string
 }
 
 const EMPTY_THERMOSTAT: Thermostat = {
@@ -41,10 +48,16 @@ const EMPTY_THERMOSTAT: Thermostat = {
   current_temperature: 20,
   current_status: 'stop',
   target_status: 'stop',
+  over_buffer_temperature: 0,
+  under_buffer_temperature: 0,
+  min_run_time: 0,
+  max_run_time: 10,
+  min_stop_time: 10,
+  current_time: new Date().getTime(),
+  room: '',
 }
 
 const Temperature = () => {
-  const [status, setStatus] = React.useState<TemperatureStatus>(null)
   const [history, setHistory] = React.useState<TemperatureStatus[]>([])
   const [showHistory, setShowHistory] = React.useState<boolean>(false)
   const [historyNum, setHistoryNum] = React.useState<number>(HISTORY_NUM)
@@ -54,31 +67,20 @@ const Temperature = () => {
   const [celsius, setCelsius] = React.useState<boolean>(false)
 
   React.useEffect(() => {
-    retrieveTemperature()
     retrieveThermostat()
-    const temperatureInterval = setInterval(retrieveTemperature, 30000)
     const thermostatInterval = setInterval(retrieveThermostat, 2000)
     return () => {
-      clearInterval(temperatureInterval)
       clearInterval(thermostatInterval)
     }
     // re-create interval when status changes, so that the new status is in retrieveStatus closure.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status])
 
-  const retrieveTemperature = () => {
-    getJson('https://temperature.javaswim.com/status').then((s: TemperatureStatus) => {
-      if (status === null || status.timestamp !== s.timestamp) {
-        setStatus(s)
-      }
-    })
-  }
-
   const renderTemperature = (degree: number): string => {
     if (degree === null) {
       return ''
     }
-    return celsius ? `${degree.toFixed(1)}\u00B0C` : `${toFahrenheit(degree).toFixed(1)}\u00B0F`
+    return celsius ? `${degree.toFixed(0)}\u00B0C` : `${toFahrenheit(degree).toFixed(0)}\u00B0F`
   }
 
   const retrieveThermostat = () => {
@@ -155,6 +157,8 @@ const Temperature = () => {
     }
   }
 
+  const toPixel = (t: number): number => t * 30
+
   const renderThermostat = () => {
     return (
       <div className='thermostat'>
@@ -171,14 +175,23 @@ const Temperature = () => {
           <div
             className='current-temperature'
             style={{
-              top: `${131 + getTemperatureOffset() * 30}px`,
+              top: `${131 + toPixel(getTemperatureOffset())}px`,
             }}
           >
-            {renderTemperature(status.temperature)}
-            <span className='room'>Family Room</span>
+            {renderTemperature(thermostat.current_temperature)}
+            <span className='room'>{thermostat.room}</span>
           </div>
-          <div className='temperature-line' />
-          <div className='target-temperature-point' />
+          <div className='temperature-line temperature-solid-line' />
+          <div
+            className='temperature-line temperature-buffer-line'
+            style={{
+              top: `${149 - toPixel(thermostat.over_buffer_temperature)}px`,
+              height: `${toPixel(
+                thermostat.over_buffer_temperature + thermostat.under_buffer_temperature
+              )}px`,
+            }}
+          />
+          <div className='target-temperature-pointer' />
         </div>
         <div className='thermostat-status'>
           <div className='current-mode'>
@@ -222,13 +235,15 @@ const Temperature = () => {
                   setSetterMode(true)
                   setNewTemp(
                     celsius
-                      ? thermostat.target_temperature.toFixed(1)
-                      : toFahrenheit(thermostat.target_temperature).toFixed(1)
+                      ? thermostat.target_temperature.toFixed(0)
+                      : toFahrenheit(thermostat.target_temperature).toFixed(0)
                   )
                 }
               }}
             >
-              {renderTemperature(isOffMode() ? status.temperature : thermostat.target_temperature)}
+              {renderTemperature(
+                isOffMode() ? thermostat.current_temperature : thermostat.target_temperature
+              )}
             </div>
           )}
         </div>

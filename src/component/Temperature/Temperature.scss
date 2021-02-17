@@ -18,28 +18,32 @@
     padding: 20px 10px 5px 10px;
     height: 400px;
     width: 300px;
+    background-color: #f9f9f9;
 
     .status {
       position: absolute;
       top: 30px;
       color: cornflowerblue;
-      .target-temperature-point {
+      .target-temperature-pointer {
         position: absolute;
-        width: 22px;
-        border-bottom: solid 2px;
+        width: 27px;
         top: 149px;
-        left: 61px;
+        left: 55px;
+        height: 2px;
+        background-color: darkgrey;
       }
       .current-temperature {
-        position: relative;
+        position: absolute;
         font-weight: 500;
+        left: 5px;
         &:after {
           content: ' ';
-          border-bottom: 1px solid;
-          width: 10px;
+          width: 23px;
           position: absolute;
           top: 19px;
-          right: -12px;
+          right: -27px;
+          height: 2px;
+          background-color: darkgray;
         }
         .room {
           position: absolute;
@@ -50,10 +54,29 @@
         }
       }
       .temperature-line {
-        position: relative;
-        right: -18px;
+        position: absolute;
+        right: -65px;
+        width: 10px;
+      }
+      .temperature-solid-line {
+        top: 24px;
         height: 262px;
-        border-right: 3px dotted;
+        background: repeating-linear-gradient(
+          to bottom,
+          transparent,
+          transparent 3px,
+          darkgray 1px,
+          darkgray 4px
+        );
+      }
+      .temperature-buffer-line {
+        background: repeating-linear-gradient(
+          to bottom,
+          lightgray,
+          lightgray 3px,
+          gray 1px,
+          gray 4px
+        );
       }
     }
 
