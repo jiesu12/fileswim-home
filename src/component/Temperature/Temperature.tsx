@@ -34,12 +34,21 @@ interface Thermostat {
   target_status: string
 }
 
+const EMPTY_THERMOSTAT: Thermostat = {
+  target_mode: 'Off',
+  current_mode: 'Off',
+  target_temperature: 20,
+  current_temperature: 20,
+  current_status: 'stop',
+  target_status: 'stop',
+}
+
 const Temperature = () => {
   const [status, setStatus] = React.useState<TemperatureStatus>(null)
   const [history, setHistory] = React.useState<TemperatureStatus[]>([])
   const [showHistory, setShowHistory] = React.useState<boolean>(false)
   const [historyNum, setHistoryNum] = React.useState<number>(HISTORY_NUM)
-  const [thermostat, setThermostat] = React.useState<Thermostat>(null)
+  const [thermostat, setThermostat] = React.useState<Thermostat>(EMPTY_THERMOSTAT)
   const [setterMode, setSetterMode] = React.useState<boolean>(false)
   const [newTemp, setNewTemp] = React.useState<string>(null) // use string to avoid long float number
   const [celsius, setCelsius] = React.useState<boolean>(false)
@@ -141,6 +150,21 @@ const Temperature = () => {
   const renderThermostat = () => {
     return (
       <div className='thermostat'>
+        <div className='status'>
+          <div
+            className='current-temperature'
+            style={{
+              top: `${
+                131 + (thermostat.target_temperature - thermostat.current_temperature) * 30
+              }px`,
+            }}
+          >
+            {renderTemperature(status.temperature)}
+            <span className='room'>Family Room</span>
+          </div>
+          <div className='temperature-line' />
+          <div className='target-temperature-point' />
+        </div>
         <div className='thermostat-status'>
           <div className='current-mode'>
             {`${thermostat.current_mode} ${isOffMode() ? '' : ' On'}`}
@@ -277,11 +301,7 @@ const Temperature = () => {
           { key: 'Switch Unit', onClick: () => setCelsius(!celsius) },
         ]}
       />
-      <div className='status'>
-        <div className='current-temperature'>{renderTemperature(status.temperature)}</div>
-        <div className='current-humidity'>{renderHumidity(status.humidity)}</div>
-      </div>
-      {thermostat && renderThermostat()}
+      {renderThermostat()}
       {renderHistory()}
       {showHistory && (
         <button

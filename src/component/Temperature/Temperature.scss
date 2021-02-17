@@ -1,5 +1,6 @@
 .temperature {
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
   padding-top: 30px;
@@ -9,28 +10,51 @@
     top: 15px;
     left: 20px;
   }
-  .status {
-    display: flex;
-    font-size: 1.8rem;
-    padding-left: 94px;
-    .current-temperature {
-      color: blue;
-      font-weight: 400;
-    }
-    .current-humidity {
-      margin-left: 2rem;
-      color: lightslategrey;
-      font-size: 1.3rem;
-      margin-top: auto;
-      margin-bottom: 3px;
-    }
-  }
-
   .thermostat {
+    position: relative;
     border: 1px solid;
     border-radius: 5px;
     padding: 20px 10px 5px 10px;
-    min-width: 342px;
+    height: 400px;
+    width: 300px;
+
+    .status {
+      position: absolute;
+      top: 30px;
+      .target-temperature-point {
+        position: absolute;
+        width: 22px;
+        border-bottom: solid 2px blue;
+        top: 149px;
+        left: 61px;
+      }
+      .current-temperature {
+        position: relative;
+        color: blue;
+        &:after {
+          content: ' ';
+          border-bottom: 1px solid blue;
+          width: 10px;
+          position: absolute;
+          top: 19px;
+          right: -12px;
+        }
+        .room {
+          position: absolute;
+          top: 24px;
+          left: 4px;
+          font-size: 0.7rem;
+          line-height: 1;
+        }
+      }
+      .temperature-line {
+        position: relative;
+        right: -18px;
+        height: 262px;
+        border-right: 3px dotted blue;
+        color: blue;
+      }
+    }
 
     .thermostat-status {
       display: flex;
@@ -63,6 +87,8 @@
       justify-content: center;
       margin-bottom: 10px;
       min-height: 38px;
+      position: relative;
+      top: 100px;
       button {
         margin-left: 5px;
       }
@@ -84,7 +110,7 @@
         }
       }
       .target-temperature {
-        font-size: 1.3rem;
+        font-size: 2rem;
         font-weight: 500;
         cursor: pointer;
         padding: 1px;
@@ -103,6 +129,8 @@
       }
     }
     .mode-selection {
+      position: relative;
+      bottom: -223px;
       display: flex;
       justify-content: center;
       button {
