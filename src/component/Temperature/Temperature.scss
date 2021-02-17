@@ -7,8 +7,9 @@
 
   .drop-down-menu {
     position: absolute;
-    top: 15px;
-    left: 20px;
+    top: 23px;
+    left: 12px;
+    z-index: 3;
   }
   .thermostat {
     position: relative;
@@ -21,19 +22,20 @@
     .status {
       position: absolute;
       top: 30px;
+      color: cornflowerblue;
       .target-temperature-point {
         position: absolute;
         width: 22px;
-        border-bottom: solid 2px blue;
+        border-bottom: solid 2px;
         top: 149px;
         left: 61px;
       }
       .current-temperature {
         position: relative;
-        color: blue;
+        font-weight: 500;
         &:after {
           content: ' ';
-          border-bottom: 1px solid blue;
+          border-bottom: 1px solid;
           width: 10px;
           position: absolute;
           top: 19px;
@@ -51,8 +53,7 @@
         position: relative;
         right: -18px;
         height: 262px;
-        border-right: 3px dotted blue;
-        color: blue;
+        border-right: 3px dotted;
       }
     }
 
@@ -68,9 +69,11 @@
       .run-status {
         position: absolute;
         right: 3px;
-        top: -10px;
+        top: -5px;
         svg {
-          fill: cornflowerblue;
+          width: 23px;
+          height: 23px;
+          fill: darkgray;
         }
         &.run {
           svg {
@@ -87,14 +90,16 @@
       justify-content: center;
       margin-bottom: 10px;
       min-height: 38px;
-      position: relative;
-      top: 100px;
+      position: absolute;
+      top: 154px;
+      left: 95px;
       button {
         margin-left: 5px;
       }
       .setter-view {
         display: flex;
-        padding-left: 90px;
+        padding-left: 2px;
+        padding-top: 5px;
         svg {
           width: 20px;
           height: 20px;
@@ -115,22 +120,17 @@
         cursor: pointer;
         padding: 1px;
         position: relative;
+        color: blue;
         &:hover {
           border: 1px lightgray solid;
           padding: 0px;
         }
-        span {
-          font-size: 0.95rem;
-          margin-left: 10px;
-          color: gray;
-          position: absolute;
-          margin-top: 7px;
-        }
       }
     }
     .mode-selection {
-      position: relative;
-      bottom: -223px;
+      position: absolute;
+      bottom: 24px;
+      left: 54px;
       display: flex;
       justify-content: center;
       button {

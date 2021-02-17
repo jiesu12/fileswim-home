@@ -139,7 +139,7 @@ const Temperature = () => {
 
   const renderRunStatus = () => {
     if (isOffMode()) {
-      return ''
+      return <Stop />
     } else if (thermostat.current_status === 'run') {
       return <Operation />
     } else {
@@ -147,16 +147,31 @@ const Temperature = () => {
     }
   }
 
+  const getTemperatureOffset = (): number => {
+    if (isOffMode()) {
+      return 0
+    } else {
+      return thermostat.target_temperature - thermostat.current_temperature
+    }
+  }
+
   const renderThermostat = () => {
     return (
       <div className='thermostat'>
+        <DropdownMenu
+          title='Menu'
+          showTitle={false}
+          rightHandSide={false}
+          menuItems={[
+            { key: 'Temperature History', onClick: handleShowHistory },
+            { key: 'Switch Unit', onClick: () => setCelsius(!celsius) },
+          ]}
+        />
         <div className='status'>
           <div
             className='current-temperature'
             style={{
-              top: `${
-                131 + (thermostat.target_temperature - thermostat.current_temperature) * 30
-              }px`,
+              top: `${131 + getTemperatureOffset() * 30}px`,
             }}
           >
             {renderTemperature(status.temperature)}
@@ -201,18 +216,19 @@ const Temperature = () => {
             </div>
           ) : (
             <div
-              className='target-temperature'
+              className={`target-temperature ${isOffMode() ? 'off' : ''}`}
               onClick={() => {
-                setSetterMode(true)
-                setNewTemp(
-                  celsius
-                    ? thermostat.target_temperature.toFixed(1)
-                    : toFahrenheit(thermostat.target_temperature).toFixed(1)
-                )
+                if (!isOffMode()) {
+                  setSetterMode(true)
+                  setNewTemp(
+                    celsius
+                      ? thermostat.target_temperature.toFixed(1)
+                      : toFahrenheit(thermostat.target_temperature).toFixed(1)
+                  )
+                }
               }}
             >
-              {isOffMode() ? '' : renderTemperature(thermostat.target_temperature)}
-              <span>Set</span>
+              {renderTemperature(isOffMode() ? status.temperature : thermostat.target_temperature)}
             </div>
           )}
         </div>
@@ -292,15 +308,6 @@ const Temperature = () => {
 
   return (
     <div className='temperature'>
-      <DropdownMenu
-        title='Menu'
-        showTitle={false}
-        rightHandSide={false}
-        menuItems={[
-          { key: 'Temperature History', onClick: handleShowHistory },
-          { key: 'Switch Unit', onClick: () => setCelsius(!celsius) },
-        ]}
-      />
       {renderThermostat()}
       {renderHistory()}
       {showHistory && (
