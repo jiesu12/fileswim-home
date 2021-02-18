@@ -9,6 +9,7 @@ import ModeSelector from './ModeSelector'
 import './Temperature.scss'
 import TemperatureHistory from './TemperatureHistory'
 import TemperatureSetter from './TemperatureSetter'
+import ThermostatHistory from './ThermostatHistory'
 
 export const THERMOSTAT_URL = 'https://thermostat.javaswim.com'
 
@@ -46,8 +47,10 @@ const EMPTY_THERMOSTAT: Thermostat = {
 
 const Temperature = () => {
   const [history, setHistory] = React.useState<TemperatureStatus[]>([])
-  const [showHistory, setShowHistory] = React.useState<boolean>(false)
+  const [showTemperatureHistory, setShowTemperatureHistory] = React.useState<boolean>(false)
+  const [showThermostatHistory, setShowThermostatHistory] = React.useState<boolean>(false)
   const [thermostat, setThermostat] = React.useState<Thermostat>(EMPTY_THERMOSTAT)
+  const [thermostatHistory, setThermostHistory] = React.useState<Thermostat[]>([])
   const [celsius, setCelsius] = React.useState<boolean>(false)
   const [setterMode, setSetterMode] = React.useState<boolean>(false)
 
@@ -65,7 +68,7 @@ const Temperature = () => {
     getJson(THERMOSTAT_URL).then(setThermostat)
   }
 
-  const retrieveHistory = () => {
+  const retrieveTemperatureHistory = () => {
     getJson('https://temperature.javaswim.com/history').then((text: string) => {
       const h =
         '[' +
@@ -80,15 +83,31 @@ const Temperature = () => {
     })
   }
 
+  const retrieveThermostatHistory = () => {
+    getJson(`${THERMOSTAT_URL}/history`).then((h: Thermostat[]) => {
+      h.sort((a: Thermostat, b: Thermostat) => b.current_time - a.current_time)
+      setThermostHistory(h)
+    })
+  }
+
   if (status === null) {
     return null
   }
 
-  const handleShowHistory = () => {
-    if (!showHistory) {
-      retrieveHistory()
+  const handleShowTemperatureHistory = () => {
+    if (!showTemperatureHistory) {
+      retrieveTemperatureHistory()
+      setShowThermostatHistory(false)
     }
-    setShowHistory(!showHistory)
+    setShowTemperatureHistory(!showTemperatureHistory)
+  }
+
+  const handleShowThermostatHistory = () => {
+    if (!showThermostatHistory) {
+      retrieveThermostatHistory()
+      setShowTemperatureHistory(false)
+    }
+    setShowThermostatHistory(!showThermostatHistory)
   }
 
   const isOffMode = () => {
@@ -113,7 +132,8 @@ const Temperature = () => {
           showTitle={false}
           rightHandSide={false}
           menuItems={[
-            { key: 'Temperature History', onClick: handleShowHistory },
+            { key: 'Temperature History', onClick: handleShowTemperatureHistory },
+            { key: 'Thermostat History', onClick: handleShowThermostatHistory },
             { key: 'Switch Unit', onClick: () => setCelsius(!celsius) },
           ]}
         />
@@ -148,7 +168,8 @@ const Temperature = () => {
   return (
     <div className='temperature'>
       {renderThermostat()}
-      {showHistory && <TemperatureHistory history={history} celsius={celsius} />}
+      {showTemperatureHistory && <TemperatureHistory history={history} celsius={celsius} />}
+      {showThermostatHistory && <ThermostatHistory history={thermostatHistory} celsius={celsius} />}
     </div>
   )
 }
