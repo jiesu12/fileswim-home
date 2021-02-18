@@ -3,15 +3,12 @@ import DropdownMenu from '@jiesu12/react-dropdown-menu'
 import * as React from 'react'
 import { GarageStatus } from '../../api/dto'
 import './Garage.scss'
-import Timeline from './Timeline'
-
-const HISTORY_NUM = 4
+import Timeline from '../Timeline/Timeline'
 
 const Garage = () => {
   const [status, setStatus] = React.useState<GarageStatus>(null)
   const [history, setHistory] = React.useState<GarageStatus[]>([])
   const [showHistory, setShowHistory] = React.useState<boolean>(false)
-  const [historyNum, setHistoryNum] = React.useState<number>(HISTORY_NUM)
   const [showCam, setShowCam] = React.useState<boolean>(false)
   React.useEffect(() => {
     retrieveStatus()
@@ -77,7 +74,15 @@ const Garage = () => {
     if (!showHistory) {
       return null
     }
-    return <Timeline history={history} num={historyNum} />
+    return (
+      <Timeline
+        history={history}
+        stepNum={4}
+        timeProp={'timestamp'}
+        statusProp={'status'}
+        statusColorScheme={{ open: 'red', close: 'black' }}
+      />
+    )
   }
 
   return (
@@ -111,14 +116,6 @@ const Garage = () => {
       </div>
       {showCam && renderCam()}
       {renderHistory()}
-      {showHistory && (
-        <button
-          className='btn btn-sm btn-outline-primary'
-          onClick={() => setHistoryNum(historyNum + HISTORY_NUM)}
-        >
-          Show More
-        </button>
-      )}
     </div>
   )
 }

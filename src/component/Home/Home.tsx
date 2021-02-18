@@ -1,7 +1,7 @@
 import Tab from '@jiesu12/react-tab'
 import * as React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { TAB_FRONT_DOOR, TAB_GARAGE, TAB_THERMOSTAT } from '../constant/constant'
+import { TAB_FRONT_DOOR, TAB_GARAGE, TAB_THERMOSTAT } from '../../constant/constant'
 import FrontDoor from '../FrontDoor/FrontDoor'
 import Garage from '../Garage/Garage'
 import Temperature from '../Temperature/Temperature'

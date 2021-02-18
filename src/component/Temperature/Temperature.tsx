@@ -10,6 +10,7 @@ import './Temperature.scss'
 import TemperatureHistory from './TemperatureHistory'
 import TemperatureSetter from './TemperatureSetter'
 import ThermostatHistory from './ThermostatHistory'
+import Timeline from '../Timeline/Timeline'
 
 export const THERMOSTAT_URL = 'https://thermostat.javaswim.com'
 
@@ -167,7 +168,15 @@ const Temperature = () => {
     <div className='temperature'>
       {renderThermostat()}
       {showTemperatureHistory && <TemperatureHistory history={history} celsius={celsius} />}
-      {showThermostatHistory && <ThermostatHistory history={thermostatHistory} celsius={celsius} />}
+      {showThermostatHistory && (
+        <Timeline
+          history={thermostatHistory}
+          stepNum={4}
+          timeProp={'current_time'}
+          statusProp={'target_status'}
+          statusColorScheme={{ run: 'red', stop: 'blue' }}
+        />
+      )}
     </div>
   )
 }

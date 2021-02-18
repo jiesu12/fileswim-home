@@ -15,12 +15,8 @@
       top: -10px;
     }
 
-    &.status-open {
-      border-right: 10px solid blue;
-    }
-
-    &.status-close {
-      border-right: 10px solid red;
+    &.status {
+      border-right: 10px solid;
     }
 
     .length {
