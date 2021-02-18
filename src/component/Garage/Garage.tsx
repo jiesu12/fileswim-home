@@ -80,7 +80,7 @@ const Garage = () => {
         stepNum={4}
         timeProp={'timestamp'}
         statusProp={'status'}
-        statusColorScheme={{ open: 'red', close: 'black' }}
+        statusColorScheme={{ open: 'red', close: 'gray' }}
       />
     )
   }

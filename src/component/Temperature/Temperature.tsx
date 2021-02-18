@@ -4,13 +4,12 @@ import * as React from 'react'
 import { TemperatureStatus } from '../../api/dto'
 import Operation from '../icons/Operation'
 import Stop from '../icons/Stop'
+import Timeline from '../Timeline/Timeline'
 import CurrentTemperature from './CurrentTemperature'
 import ModeSelector from './ModeSelector'
 import './Temperature.scss'
 import TemperatureHistory from './TemperatureHistory'
 import TemperatureSetter from './TemperatureSetter'
-import ThermostatHistory from './ThermostatHistory'
-import Timeline from '../Timeline/Timeline'
 
 export const THERMOSTAT_URL = 'https://thermostat.javaswim.com'
 
@@ -174,7 +173,7 @@ const Temperature = () => {
           stepNum={4}
           timeProp={'current_time'}
           statusProp={'target_status'}
-          statusColorScheme={{ run: 'red', stop: 'blue' }}
+          statusColorScheme={{ run: 'red', stop: 'gray' }}
         />
       )}
     </div>
