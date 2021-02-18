@@ -27,7 +27,7 @@
       .target-temperature-pointer {
         position: absolute;
         width: 27px;
-        top: 149px;
+        top: 150px;
         left: 55px;
         height: 2px;
         background-color: darkgrey;
@@ -118,6 +118,10 @@
       left: 95px;
       button {
         margin-left: 5px;
+        &:focus {
+          outline: 0 !important;
+          box-shadow: none;
+        }
       }
       .setter-view {
         display: flex;
@@ -133,17 +137,39 @@
         .cancel svg {
           fill: red;
         }
+        .up {
+          position: absolute;
+          top: -33px;
+          left: 12px;
+          svg {
+            fill: gray;
+            width: 30px;
+            height: 30px;
+          }
+        }
+        .down {
+          position: absolute;
+          top: 42px;
+          left: 12px;
+          svg {
+            fill: gray;
+            width: 30px;
+            height: 30px;
+          }
+        }
         .temperature-input {
           width: 80px;
         }
       }
       .target-temperature {
-        font-size: 2rem;
+        font-size: 3rem;
         font-weight: 500;
         cursor: pointer;
         padding: 1px;
-        position: relative;
+        position: absolute;
         color: blue;
+        left: 10px;
+        top: -10px;
         &:hover {
           border: 1px lightgray solid;
           padding: 0px;

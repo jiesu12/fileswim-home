@@ -4,8 +4,10 @@ import * as React from 'react'
 import { TemperatureStatus } from '../../api/dto'
 import CheckMark from '../icons/CheckMark'
 import Cross from '../icons/Cross'
+import DownArrow from '../icons/DownArrow'
 import Operation from '../icons/Operation'
 import Stop from '../icons/Stop'
+import UpArrow from '../icons/UpArrow'
 import Timestamp from '../Timestamp/Timestamp'
 import './Temperature.scss'
 
@@ -225,6 +227,18 @@ const Temperature = () => {
                 onClick={() => setSetterMode(false)}
               >
                 <Cross />
+              </button>
+              <button
+                className='btn btn-sm btn-default up'
+                onClick={() => setNewTemp((Number(newTemp) + 1).toString())}
+              >
+                <UpArrow />
+              </button>
+              <button
+                className='btn btn-sm btn-default down'
+                onClick={() => setNewTemp((Number(newTemp) - 1).toString())}
+              >
+                <DownArrow />
               </button>
             </div>
           ) : (
