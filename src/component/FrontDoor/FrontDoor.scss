@@ -9,20 +9,13 @@
     left: 20px;
   }
 
-  .cam-control {
-    display: flex;
-    justify-content: center;
-    .show-cam {
-      margin: 5px auto 5px;
-    }
-  }
-
   .cam {
     display: flex;
     justify-content: center;
+    padding-top: 5px;
     img {
       max-width: 100vw;
-      height: calc(100vh - 85px);
+      height: calc(100vh - 50px);
       object-fit: contain;
       -o-object-fit: contain;
     }

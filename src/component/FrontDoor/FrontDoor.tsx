@@ -6,7 +6,6 @@ import './FrontDoor.scss'
 const CAM_URL = 'https://cam1.javaswim.com'
 
 const FrontDoor = () => {
-  const [showCam, setShowCam] = React.useState<boolean>(false)
   const dayVision = () => {
     postJson(`${CAM_URL}/irswitch/on`)
   }
@@ -35,12 +34,9 @@ const FrontDoor = () => {
           },
         ]}
       />
-      <div className='cam-control'>
-        <button className='show-cam btn btn-sm btn-primary' onClick={() => setShowCam(!showCam)}>
-          {showCam ? 'Hide' : 'Show'} Camera
-        </button>
+      <div className='cam'>
+        <img src={`${CAM_URL}/stream`} alt='image' />
       </div>
-      <div className='cam'>{showCam && <img src={`${CAM_URL}/stream`} alt='image' />}</div>
     </div>
   )
 }

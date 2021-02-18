@@ -139,9 +139,7 @@ const Temperature = () => {
         />
         <CurrentTemperature thermostat={thermostat} celsius={celsius} />
         <div className='thermostat-status'>
-          <div className='current-mode'>
-            {`${thermostat.current_mode} ${isOffMode() ? '' : ' On'}`}
-          </div>
+          <div className='current-mode'>{thermostat.current_mode}</div>
           <div className={`run-status ${thermostat.current_status}`}>{renderRunStatus()}</div>
         </div>
         <TemperatureSetter
