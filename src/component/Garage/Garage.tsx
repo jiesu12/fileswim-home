@@ -4,12 +4,15 @@ import * as React from 'react'
 import { GarageStatus } from '../../api/dto'
 import './Garage.scss'
 import Timeline from '../Timeline/Timeline'
+import Modal, { ModalCommands } from '@jiesu12/react-modal'
 
 const Garage = () => {
   const [status, setStatus] = React.useState<GarageStatus>(null)
   const [history, setHistory] = React.useState<GarageStatus[]>([])
   const [showHistory, setShowHistory] = React.useState<boolean>(false)
   const [showCam, setShowCam] = React.useState<boolean>(false)
+  const modalCmdRef = React.useRef<ModalCommands>(null)
+
   React.useEffect(() => {
     retrieveStatus()
     const interval = setInterval(retrieveStatus, 5000)
@@ -42,9 +45,9 @@ const Garage = () => {
   }
 
   const handleDoorSwitch = () => {
-    if (confirm('Press Garage Door Button?')) {
+    modalCmdRef.current.confirm('Press Garage Door Button?', () => {
       postJson('https://garage.javaswim.com/doorswitch')
-    }
+    })
   }
 
   const renderCam = () => {
@@ -87,6 +90,7 @@ const Garage = () => {
 
   return (
     <div className='garage'>
+      <Modal commandRef={modalCmdRef} />
       <DropdownMenu
         title='Menu'
         showTitle={false}
