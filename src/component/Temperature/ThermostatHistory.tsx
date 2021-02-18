@@ -18,8 +18,8 @@ const ThermostatHistory = ({ celsius, history }: Props) => {
           <tr>
             <th>Time</th>
             <th>Status</th>
-            <th>Current Temperature</th>
-            <th>Target Temperature</th>
+            <th>Current</th>
+            <th>Target</th>
           </tr>
         </thead>
         <tbody>
