@@ -2,6 +2,11 @@
   font-family: 'Roboto Mono', monospace;
   font-size: 0.9rem;
 
+  @media only screen and (max-width: 760px) {
+    left: 150px;
+    width: 166px;
+  }
+
   &.hour20,
   &.hour21,
   &.hour22,

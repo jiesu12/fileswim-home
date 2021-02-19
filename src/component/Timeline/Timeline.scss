@@ -4,6 +4,9 @@
   left: -145px;
   padding-bottom: 10px;
 
+  @media only screen and (max-width: 760px) {
+    left: -152px;
+  }
   .time-period {
     position: relative;
     min-height: 50px;
@@ -12,7 +15,9 @@
     .timestamp {
       margin-right: 5px;
       position: relative;
-      top: -10px;
+      @media only screen and (max-width: 760px) {
+        top: 3px;
+      }
     }
 
     &.status {
@@ -22,6 +27,13 @@
     .length {
       position: relative;
       right: -315px;
+
+      @media only screen and (max-width: 760px) {
+        position: relative;
+        left: 316px;
+        top: -35px;
+        width: 140px;
+      }
     }
 
     &.super-short {
