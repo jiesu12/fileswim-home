@@ -10,6 +10,8 @@ import ModeSelector from './ModeSelector'
 import './Temperature.scss'
 import TemperatureHistory from './TemperatureHistory'
 import TemperatureSetter from './TemperatureSetter'
+import Modal, { ModalCommands } from '@jiesu12/react-modal'
+import Settings from './Settings'
 
 export const THERMOSTAT_URL = 'https://thermostat.javaswim.com'
 
@@ -25,6 +27,7 @@ export interface Thermostat {
   min_run_time: number
   max_run_time: number
   min_stop_time: number
+  alert_time_threshold: number
   current_time: number
   room: string
 }
@@ -41,6 +44,7 @@ const EMPTY_THERMOSTAT: Thermostat = {
   min_run_time: 0,
   max_run_time: 10,
   min_stop_time: 10,
+  alert_time_threshold: 600,
   current_time: new Date().getTime(),
   room: '',
 }
@@ -53,6 +57,7 @@ const Temperature = () => {
   const [thermostatHistory, setThermostHistory] = React.useState<Thermostat[]>([])
   const [celsius, setCelsius] = React.useState<boolean>(false)
   const [setterMode, setSetterMode] = React.useState<boolean>(false)
+  const modalCmdRef = React.useRef<ModalCommands>(null)
 
   React.useEffect(() => {
     retrieveThermostat()
@@ -127,6 +132,7 @@ const Temperature = () => {
   const renderThermostat = () => {
     return (
       <div className='thermostat'>
+        <Modal commandRef={modalCmdRef} />
         <DropdownMenu
           title='Menu'
           showTitle={false}
@@ -135,6 +141,18 @@ const Temperature = () => {
             { key: 'Temperature History', onClick: handleShowTemperatureHistory },
             { key: 'Thermostat History', onClick: handleShowThermostatHistory },
             { key: 'Switch Unit', onClick: () => setCelsius(!celsius) },
+            {
+              key: 'Settings',
+              onClick: () =>
+                modalCmdRef.current.modal(
+                  'Settings',
+                  <Settings
+                    thermostat={thermostat}
+                    modalCommands={modalCmdRef.current}
+                    celsius={celsius}
+                  />
+                ),
+            },
           ]}
         />
         <CurrentTemperature thermostat={thermostat} celsius={celsius} />
