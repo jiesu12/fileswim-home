@@ -132,7 +132,9 @@ const Temperature = () => {
   const renderThermostat = () => {
     return (
       <div className='thermostat'>
-        <Modal commandRef={modalCmdRef} />
+        <Modal title={'Settings'} commandRef={modalCmdRef}>
+          <Settings thermostat={thermostat} setThermostat={setThermostat} />
+        </Modal>
         <DropdownMenu
           title='Menu'
           showTitle={false}
@@ -143,15 +145,7 @@ const Temperature = () => {
             { key: 'Switch Unit', onClick: () => setCelsius(!celsius) },
             {
               key: 'Settings',
-              onClick: () =>
-                modalCmdRef.current.modal(
-                  'Settings',
-                  <Settings
-                    thermostat={thermostat}
-                    modalCommands={modalCmdRef.current}
-                    celsius={celsius}
-                  />
-                ),
+              onClick: () => modalCmdRef.current.modal(),
             },
           ]}
         />

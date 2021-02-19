@@ -1,51 +1,115 @@
+import { postJson } from '@jiesu12/fileswim-api'
 import * as React from 'react'
-import { Thermostat } from './Temperature'
-import { ModalCommands } from '@jiesu12/react-modal'
+import NumberEditor from '../NumberEditor/NumberEditor'
 import './Settings.scss'
+import { Thermostat, THERMOSTAT_URL } from './Temperature'
 
 interface Props {
   thermostat: Thermostat
-  modalCommands: ModalCommands
-  celsius: boolean
+  setThermostat: (thermostat: Thermostat) => void
 }
 
-const Settings = ({ thermostat, modalCommands, celsius }: Props) => {
-  const handleOk = () => modalCommands.close()
+const Settings = ({ thermostat, setThermostat }: Props) => {
+  const renderCelsius = (num: number) => `${num}\u00B0C`
+  const renderSeconds = (num: number) => `${num} s`
   return (
     <div className='thermostat-settings'>
-      <table className='table'>
+      <table className='table setting-table'>
         <tbody>
           <tr>
             <td>Over Buffer</td>
-            <td>{thermostat.over_buffer_temperature}</td>
+            <td>
+              <NumberEditor
+                num={thermostat.over_buffer_temperature}
+                numberPattern={/^\d?$|^\d\.$|^\d\.\d$/}
+                renderView={renderCelsius}
+                showArrow={false}
+                setCb={(num) => {
+                  postJson(`${THERMOSTAT_URL}/temperature/overbuffer/${num}`).then((stat) =>
+                    setThermostat(stat)
+                  )
+                }}
+              />
+            </td>
           </tr>
           <tr>
             <td>Under Buffer</td>
-            <td>{thermostat.under_buffer_temperature}</td>
+            <td>
+              <NumberEditor
+                num={thermostat.under_buffer_temperature}
+                numberPattern={/^\d?$|^\d\.$|^\d\.\d$/}
+                renderView={renderCelsius}
+                showArrow={false}
+                setCb={(num) => {
+                  postJson(`${THERMOSTAT_URL}/temperature/underbuffer/${num}`).then((stat) =>
+                    setThermostat(stat)
+                  )
+                }}
+              />
+            </td>
           </tr>
           <tr>
             <td>Min Run Time</td>
-            <td>{thermostat.min_run_time}</td>
+            <td>
+              <NumberEditor
+                num={thermostat.min_run_time}
+                renderView={renderSeconds}
+                showArrow={false}
+                setCb={(num) => {
+                  postJson(`${THERMOSTAT_URL}/minruntime/${num}`).then((stat) =>
+                    setThermostat(stat)
+                  )
+                }}
+              />
+            </td>
           </tr>
           <tr>
             <td>Max Run Time</td>
-            <td>{thermostat.max_run_time}</td>
+            <td>
+              <NumberEditor
+                num={thermostat.max_run_time}
+                renderView={renderSeconds}
+                showArrow={false}
+                setCb={(num) => {
+                  postJson(`${THERMOSTAT_URL}/maxruntime/${num}`).then((stat) =>
+                    setThermostat(stat)
+                  )
+                }}
+              />
+            </td>
           </tr>
           <tr>
             <td>Min Stop Time</td>
-            <td>{thermostat.min_stop_time}</td>
+            <td>
+              <NumberEditor
+                num={thermostat.min_stop_time}
+                renderView={renderSeconds}
+                showArrow={false}
+                setCb={(num) => {
+                  postJson(`${THERMOSTAT_URL}/minstoptime/${num}`).then((stat) =>
+                    setThermostat(stat)
+                  )
+                }}
+              />
+            </td>
           </tr>
           <tr>
-            <td>Alert Time Threshold</td>
-            <td>{thermostat.alert_time_threshold}</td>
+            <td className='left-col'>Alert Time Threshold</td>
+            <td>
+              <NumberEditor
+                num={thermostat.alert_time_threshold}
+                renderView={renderSeconds}
+                showArrow={false}
+                setCb={(num) => {
+                  postJson(`${THERMOSTAT_URL}/alerttimethreshold/${num}`).then((stat) =>
+                    setThermostat(stat)
+                  )
+                }}
+              />
+            </td>
           </tr>
         </tbody>
       </table>
-      <div className='button-panel'>
-        <button className='btn btn-sm btn-primary' onClick={handleOk}>
-          Ok
-        </button>
-      </div>
     </div>
   )
 }

@@ -1,4 +1,13 @@
 .thermostat-settings {
+  width: 360px;
+  padding-bottom: 6px;
+
+  .setting-table {
+    .left-col {
+      width: 200px;
+    }
+  }
+
   .button-panel {
     display: flex;
     justify-content: center;
