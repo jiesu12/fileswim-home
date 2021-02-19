@@ -53,12 +53,12 @@ const Timeline = ({ history, stepNum, timeProp, statusProp, statusColorScheme }:
     const mins = Math.floor(secs / 60)
     const timePeriodClass = getTimePeriodClass(mins)
     return (
-      <div
-        key={status[timeProp]}
-        className={`time-period ${timePeriodClass} status`}
-        style={{ borderRightColor: statusColorScheme[nextStatus[statusProp]] }}
-      >
+      <div key={status[timeProp]} className={`time-period ${timePeriodClass} timeline-status`}>
         <Timestamp timestamp={status[timeProp]} />
+        <div
+          className='time-period-line'
+          style={{ backgroundColor: statusColorScheme[nextStatus[statusProp]] }}
+        />
         <div className={`length `}>
           {nextStatus[statusProp]} for {timePeriodToStr(secs)}
         </div>
@@ -82,7 +82,7 @@ const Timeline = ({ history, stepNum, timeProp, statusProp, statusColorScheme }:
       {history.slice(0, historyNum).map((h, index) => renderTimePeriod(h, history[index + 1]))}
       {
         <button
-          className='btn btn-sm btn-outline-primary'
+          className='btn btn-sm btn-primary'
           onClick={() => setHistoryNum(historyNum + stepNum)}
         >
           Show More

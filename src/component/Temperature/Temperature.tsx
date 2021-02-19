@@ -49,14 +49,15 @@ const EMPTY_THERMOSTAT: Thermostat = {
   room: '',
 }
 
+type ModalContent = 'Settings' | 'Thermostat History' | 'Temperature History'
+
 const Temperature = () => {
   const [history, setHistory] = React.useState<TemperatureStatus[]>([])
-  const [showTemperatureHistory, setShowTemperatureHistory] = React.useState<boolean>(false)
-  const [showThermostatHistory, setShowThermostatHistory] = React.useState<boolean>(false)
   const [thermostat, setThermostat] = React.useState<Thermostat>(EMPTY_THERMOSTAT)
   const [thermostatHistory, setThermostHistory] = React.useState<Thermostat[]>([])
   const [celsius, setCelsius] = React.useState<boolean>(false)
   const [setterMode, setSetterMode] = React.useState<boolean>(false)
+  const [modalContent, setModalContent] = React.useState<ModalContent>(null)
   const modalCmdRef = React.useRef<ModalCommands>(null)
 
   React.useEffect(() => {
@@ -99,22 +100,6 @@ const Temperature = () => {
     return null
   }
 
-  const handleShowTemperatureHistory = () => {
-    if (!showTemperatureHistory) {
-      retrieveTemperatureHistory()
-      setShowThermostatHistory(false)
-    }
-    setShowTemperatureHistory(!showTemperatureHistory)
-  }
-
-  const handleShowThermostatHistory = () => {
-    if (!showThermostatHistory) {
-      retrieveThermostatHistory()
-      setShowTemperatureHistory(false)
-    }
-    setShowThermostatHistory(!showThermostatHistory)
-  }
-
   const isOffMode = () => {
     return thermostat.current_mode === 'Off'
   }
@@ -129,23 +114,58 @@ const Temperature = () => {
     }
   }
 
+  const renderModalContent = () => {
+    if (modalContent === 'Settings') {
+      return <Settings thermostat={thermostat} setThermostat={setThermostat} />
+    } else if (modalContent === 'Thermostat History') {
+      return (
+        <Timeline
+          history={thermostatHistory}
+          stepNum={4}
+          timeProp={'current_time'}
+          statusProp={'target_status'}
+          statusColorScheme={{ run: 'red', stop: 'gray' }}
+        />
+      )
+    } else if (modalContent === 'Temperature History') {
+      return <TemperatureHistory history={history} celsius={celsius} />
+    } else {
+      return null
+    }
+  }
+
   const renderThermostat = () => {
     return (
       <div className='thermostat'>
-        <Modal title={'Settings'} commandRef={modalCmdRef}>
-          <Settings thermostat={thermostat} setThermostat={setThermostat} />
-        </Modal>
+        <Modal commandRef={modalCmdRef}>{renderModalContent()}</Modal>
         <DropdownMenu
           title='Menu'
           showTitle={false}
           rightHandSide={false}
           menuItems={[
-            { key: 'Temperature History', onClick: handleShowTemperatureHistory },
-            { key: 'Thermostat History', onClick: handleShowThermostatHistory },
+            {
+              key: 'Thermostat History',
+              onClick: () => {
+                retrieveThermostatHistory()
+                setModalContent('Thermostat History')
+                modalCmdRef.current.modal('Thermostat History')
+              },
+            },
+            {
+              key: 'Temperature History',
+              onClick: () => {
+                retrieveTemperatureHistory()
+                setModalContent('Temperature History')
+                modalCmdRef.current.modal('Temperature History')
+              },
+            },
             { key: 'Switch Unit', onClick: () => setCelsius(!celsius) },
             {
               key: 'Settings',
-              onClick: () => modalCmdRef.current.modal(),
+              onClick: () => {
+                setModalContent('Settings')
+                modalCmdRef.current.modal('Settings')
+              },
             },
           ]}
         />
@@ -175,21 +195,7 @@ const Temperature = () => {
     )
   }
 
-  return (
-    <div className='temperature'>
-      {renderThermostat()}
-      {showTemperatureHistory && <TemperatureHistory history={history} celsius={celsius} />}
-      {showThermostatHistory && (
-        <Timeline
-          history={thermostatHistory}
-          stepNum={4}
-          timeProp={'current_time'}
-          statusProp={'target_status'}
-          statusColorScheme={{ run: 'red', stop: 'gray' }}
-        />
-      )}
-    </div>
-  )
+  return <div className='temperature'>{renderThermostat()}</div>
 }
 
 export default Temperature

@@ -22,7 +22,7 @@ const TemperatureHistory = ({ history, celsius }: Props) => {
   return (
     <div>
       <table className='table history-table'>
-        <thead>
+        <thead className='thead-light'>
           <tr>
             <th>Time</th>
             <th>Temperature</th>

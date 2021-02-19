@@ -9,7 +9,6 @@ import Modal, { ModalCommands } from '@jiesu12/react-modal'
 const Garage = () => {
   const [status, setStatus] = React.useState<GarageStatus>(null)
   const [history, setHistory] = React.useState<GarageStatus[]>([])
-  const [showHistory, setShowHistory] = React.useState<boolean>(false)
   const [showCam, setShowCam] = React.useState<boolean>(false)
   const modalCmdRef = React.useRef<ModalCommands>(null)
 
@@ -31,13 +30,6 @@ const Garage = () => {
 
   if (status === null) {
     return null
-  }
-
-  const handleShowHistory = () => {
-    if (!showHistory) {
-      retrieveHistory()
-    }
-    setShowHistory(!showHistory)
   }
 
   const handleShowCam = () => {
@@ -73,30 +65,29 @@ const Garage = () => {
     })
   }
 
-  const renderHistory = () => {
-    if (!showHistory) {
-      return null
-    }
-    return (
-      <Timeline
-        history={history}
-        stepNum={4}
-        timeProp={'timestamp'}
-        statusProp={'status'}
-        statusColorScheme={{ open: 'red', close: 'gray' }}
-      />
-    )
-  }
-
   return (
     <div className='garage'>
-      <Modal commandRef={modalCmdRef} />
+      <Modal commandRef={modalCmdRef}>
+        <Timeline
+          history={history}
+          stepNum={4}
+          timeProp={'timestamp'}
+          statusProp={'status'}
+          statusColorScheme={{ open: 'red', close: 'gray' }}
+        />
+      </Modal>
       <DropdownMenu
         title='Menu'
         showTitle={false}
         rightHandSide={false}
         menuItems={[
-          { key: 'History', onClick: handleShowHistory },
+          {
+            key: 'History',
+            onClick: () => {
+              retrieveHistory()
+              modalCmdRef.current.modal('Garage Door History')
+            },
+          },
           { key: 'Camera', onClick: handleShowCam },
           {
             key: 'Recordings',
@@ -119,7 +110,6 @@ const Garage = () => {
         </button>
       </div>
       {showCam && renderCam()}
-      {renderHistory()}
     </div>
   )
 }
