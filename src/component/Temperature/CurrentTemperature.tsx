@@ -17,12 +17,21 @@ const CurrentTemperature = ({ thermostat, celsius }: Props) => {
       return thermostat.target_temperature - thermostat.current_temperature
     }
   }
+
+  const calcTop = () => {
+    let top = 131 + toPixel(getTemperatureOffset())
+    // set a limt so it doesn't go out of the bound.
+    top = top < 8 ? 8 : top
+    top = top > 264 ? 264 : top
+    return `${top}px`
+  }
+
   return (
     <div className='status'>
       <div
         className='current-temperature'
         style={{
-          top: `${131 + toPixel(getTemperatureOffset())}px`,
+          top: calcTop(),
         }}
       >
         {renderTemperature(thermostat.current_temperature, celsius)}
