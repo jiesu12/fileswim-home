@@ -104,10 +104,12 @@ const TemperatureSetter = ({
             }
           }}
         >
-          {renderTemperature(
-            isOffMode() ? thermostat.current_temperature : thermostat.target_temperature,
-            celsius
-          )}
+          {thermostat.na
+            ? 'N/A'
+            : renderTemperature(
+                isOffMode() ? thermostat.current_temperature : thermostat.target_temperature,
+                celsius
+              )}
         </div>
       )}
     </div>

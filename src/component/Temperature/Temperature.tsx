@@ -30,6 +30,7 @@ export interface Thermostat {
   alert_time_threshold: number
   current_time: number
   room: string
+  na?: boolean
 }
 
 const EMPTY_THERMOSTAT: Thermostat = {
@@ -47,6 +48,7 @@ const EMPTY_THERMOSTAT: Thermostat = {
   alert_time_threshold: 600,
   current_time: new Date().getTime(),
   room: '',
+  na: true,
 }
 
 type ModalContent = 'Settings' | 'Thermostat History' | 'Temperature History'
@@ -71,7 +73,9 @@ const Temperature = () => {
   }, [status])
 
   const retrieveThermostat = () => {
-    getJson(THERMOSTAT_URL).then(setThermostat)
+    getJson(THERMOSTAT_URL)
+      .then(setThermostat)
+      .catch(() => setThermostat({ ...EMPTY_THERMOSTAT, na: true }))
   }
 
   const retrieveTemperatureHistory = () => {
