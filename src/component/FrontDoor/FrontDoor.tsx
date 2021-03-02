@@ -26,7 +26,10 @@ const FrontDoor = () => {
           {
             key: 'Recordings',
             display: (
-              <a className='menu-item' href='/fileswim/filemanager?instance=camera&path=frontdoor'>
+              <a
+                className='menu-item'
+                href='/fileswim/filemanager?instance=camera&path=frontdoor.lan'
+              >
                 Check Recordings
               </a>
             ),

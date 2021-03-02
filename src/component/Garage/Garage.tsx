@@ -92,7 +92,7 @@ const Garage = () => {
           {
             key: 'Recordings',
             display: (
-              <a className='menu-item' href='/fileswim/filemanager?instance=camera&path=garage'>
+              <a className='menu-item' href='/fileswim/filemanager?instance=camera&path=garage.lan'>
                 Recordings
               </a>
             ),
