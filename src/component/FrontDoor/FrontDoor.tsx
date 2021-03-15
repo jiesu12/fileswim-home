@@ -39,6 +39,7 @@ const FrontDoor = () => {
       />
       <div className='cam'>
         <img src={`${CAM_URL}/stream`} alt='image' />
+        <img src='https://cam3.javaswim.com/video' alt='image' />
       </div>
     </div>
   )
