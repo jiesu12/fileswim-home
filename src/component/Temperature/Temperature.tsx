@@ -34,8 +34,8 @@ export interface Thermostat {
 }
 
 const EMPTY_THERMOSTAT: Thermostat = {
-  target_mode: 'Off',
-  current_mode: 'Off',
+  target_mode: '',
+  current_mode: '',
   target_temperature: 20,
   current_temperature: 20,
   current_status: 'stop',
