@@ -37,9 +37,17 @@ interface Props {
   timeProp: string
   statusProp: string
   statusColorScheme: StatusColorScheme
+  getMoreHistory?: () => void
 }
 
-const Timeline = ({ history, stepNum, timeProp, statusProp, statusColorScheme }: Props) => {
+const Timeline = ({
+  history,
+  stepNum,
+  timeProp,
+  statusProp,
+  statusColorScheme,
+  getMoreHistory,
+}: Props) => {
   const [historyNum, setHistoryNum] = React.useState<number>(stepNum)
   const renderTimePeriod = (status: any, nextStatus: any) => {
     if (!nextStatus) {
@@ -70,6 +78,14 @@ const Timeline = ({ history, stepNum, timeProp, statusProp, statusColorScheme }:
     return null
   }
 
+  const handleShowMore = () => {
+    const newTotal = historyNum + stepNum
+    if (history.length < newTotal && getMoreHistory) {
+      getMoreHistory()
+    }
+    setHistoryNum(newTotal)
+  }
+
   return (
     <div className='timeline'>
       {renderTimePeriod(
@@ -81,10 +97,7 @@ const Timeline = ({ history, stepNum, timeProp, statusProp, statusColorScheme }:
       )}
       {history.slice(0, historyNum).map((h, index) => renderTimePeriod(h, history[index + 1]))}
       {
-        <button
-          className='btn btn-sm btn-primary'
-          onClick={() => setHistoryNum(historyNum + stepNum)}
-        >
+        <button className='btn btn-sm btn-primary' onClick={handleShowMore}>
           Show More
         </button>
       }

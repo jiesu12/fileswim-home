@@ -1,7 +1,7 @@
 import { getJson } from '@jiesu12/fileswim-api'
 import DropdownMenu from '@jiesu12/react-dropdown-menu'
 import * as React from 'react'
-import { TemperatureStatus } from '../../api/dto'
+import { TemperatureStatus, HistoryTotal } from '../../api/dto'
 import Operation from '../icons/Operation'
 import Stop from '../icons/Stop'
 import Timeline from '../Timeline/Timeline'
@@ -55,6 +55,8 @@ type ModalContent = 'Settings' | 'Thermostat History' | 'Temperature History'
 
 const Temperature = () => {
   const [history, setHistory] = React.useState<TemperatureStatus[]>([])
+  const [totalHistory, setTotalHistory] = React.useState<number>(1)
+  const [historyIndex, setHistoryIndex] = React.useState<number>(0)
   const [thermostat, setThermostat] = React.useState<Thermostat>(EMPTY_THERMOSTAT)
   const [thermostatHistory, setThermostHistory] = React.useState<Thermostat[]>([])
   const [celsius, setCelsius] = React.useState<boolean>(false)
@@ -64,6 +66,7 @@ const Temperature = () => {
 
   React.useEffect(() => {
     retrieveThermostat()
+    retrieveTotalHistory()
     const thermostatInterval = setInterval(retrieveThermostat, 2000)
     return () => {
       clearInterval(thermostatInterval)
@@ -76,6 +79,12 @@ const Temperature = () => {
     getJson(THERMOSTAT_URL)
       .then(setThermostat)
       .catch(() => setThermostat({ ...EMPTY_THERMOSTAT, na: true }))
+  }
+
+  const retrieveTotalHistory = () => {
+    getJson(`${THERMOSTAT_URL}/history/total`).then((total: HistoryTotal) =>
+      setTotalHistory(total.total)
+    )
   }
 
   const retrieveTemperatureHistory = () => {
@@ -93,11 +102,16 @@ const Temperature = () => {
     })
   }
 
-  const retrieveThermostatHistory = () => {
-    getJson(`${THERMOSTAT_URL}/history`).then((h: Thermostat[]) => {
+  const retrieveThermostatHistory = (resetIndex = false) => {
+    const index = resetIndex ? 0 : historyIndex
+    if (totalHistory <= index) {
+      return
+    }
+    getJson(`${THERMOSTAT_URL}/history/${index}`).then((h: Thermostat[]) => {
       h.sort((a: Thermostat, b: Thermostat) => b.current_time - a.current_time)
-      setThermostHistory(h)
+      setThermostHistory([...thermostatHistory, ...h])
     })
+    setHistoryIndex(index + 1)
   }
 
   if (status === null) {
@@ -129,6 +143,7 @@ const Temperature = () => {
           timeProp={'current_time'}
           statusProp={'target_status'}
           statusColorScheme={{ run: 'red', stop: 'gray' }}
+          getMoreHistory={retrieveThermostatHistory}
         />
       )
     } else if (modalContent === 'Temperature History') {
@@ -150,7 +165,7 @@ const Temperature = () => {
             {
               key: 'Thermostat History',
               onClick: () => {
-                retrieveThermostatHistory()
+                retrieveThermostatHistory(true)
                 setModalContent('Thermostat History')
                 modalCmdRef.current.modal('Thermostat History')
               },

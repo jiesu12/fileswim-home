@@ -8,3 +8,7 @@ export interface TemperatureStatus {
   humidity: number
   timestamp: number
 }
+
+export interface HistoryTotal {
+  total: number
+}
