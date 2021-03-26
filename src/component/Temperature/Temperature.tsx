@@ -13,6 +13,7 @@ import TemperatureSetter from './TemperatureSetter'
 import Modal, { ModalCommands } from '@jiesu12/react-modal'
 import Settings from './Settings'
 import Scheduler from './Scheduler'
+import ScheduleSwitch from './ScheduleSwitch'
 
 export const THERMOSTAT_URL = 'https://thermostat.javaswim.com'
 
@@ -31,6 +32,7 @@ export interface Thermostat {
   alert_time_threshold: number
   current_time: number
   room: string
+  use_schedule: boolean
   na?: boolean
 }
 
@@ -49,6 +51,7 @@ const EMPTY_THERMOSTAT: Thermostat = {
   alert_time_threshold: 600,
   current_time: new Date().getTime(),
   room: '',
+  use_schedule: false,
   na: true,
 }
 
@@ -210,6 +213,7 @@ const Temperature = () => {
           setterMode={setterMode}
           setSetterMode={setSetterMode}
         />
+        <ScheduleSwitch useSchedule={thermostat.use_schedule} setThermostat={setThermostat} />
         <ModeSelector
           setterMode={setterMode}
           thermostat={thermostat}

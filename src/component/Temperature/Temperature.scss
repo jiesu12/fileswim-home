@@ -176,6 +176,19 @@
         }
       }
     }
+    .schedule-switch {
+      position: absolute;
+      bottom: 150px;
+      left: 110px;
+      font-weight: 400;
+      .switch {
+        cursor: pointer;
+        color: blue;
+        &:hover {
+          color: cornflowerblue;
+        }
+      }
+    }
     .mode-selection {
       position: absolute;
       bottom: 24px;
