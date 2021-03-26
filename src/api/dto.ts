@@ -12,3 +12,12 @@ export interface TemperatureStatus {
 export interface HistoryTotal {
   total: number
 }
+
+export interface TemperatureAtTime {
+  seconds_of_day: number
+  temperature: number
+}
+
+export type DailySchedule = Array<TemperatureAtTime>
+
+export type WeeklySchedule = Array<DailySchedule>

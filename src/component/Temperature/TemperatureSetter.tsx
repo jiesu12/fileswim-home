@@ -6,8 +6,7 @@ import CheckMark from '../icons/CheckMark'
 import Cross from '../icons/Cross'
 import UpArrow from '../icons/UpArrow'
 import DownArrow from '../icons/DownArrow'
-
-const TEMPERATURE_PATTERN = /^\d{0,2}$/
+import { isNumberKey, TEMPERATURE_PATTERN } from '../../util/StringUtil'
 
 interface Props {
   celsius: boolean
@@ -25,19 +24,6 @@ const TemperatureSetter = ({
   setterMode,
 }: Props) => {
   const [newTemp, setNewTemp] = React.useState<string>(null) // use string to avoid long float number
-
-  const isNumberKey = (evt: any) => {
-    const charCode = evt.which ? evt.which : evt.keyCode
-    if (
-      charCode != 190 &&
-      charCode != 37 &&
-      charCode != 39 &&
-      charCode != 8 &&
-      (charCode < 48 || charCode > 57)
-    ) {
-      evt.preventDefault()
-    }
-  }
 
   const isOffMode = () => {
     return thermostat.current_mode === 'Off'

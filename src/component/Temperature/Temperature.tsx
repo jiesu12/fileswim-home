@@ -12,6 +12,7 @@ import TemperatureHistory from './TemperatureHistory'
 import TemperatureSetter from './TemperatureSetter'
 import Modal, { ModalCommands } from '@jiesu12/react-modal'
 import Settings from './Settings'
+import Scheduler from './Scheduler'
 
 export const THERMOSTAT_URL = 'https://thermostat.javaswim.com'
 
@@ -51,7 +52,7 @@ const EMPTY_THERMOSTAT: Thermostat = {
   na: true,
 }
 
-type ModalContent = 'Settings' | 'Thermostat History' | 'Temperature History'
+type ModalContent = 'Settings' | 'Thermostat History' | 'Temperature History' | 'Schedule'
 
 const Temperature = () => {
   const [history, setHistory] = React.useState<TemperatureStatus[]>([])
@@ -135,6 +136,8 @@ const Temperature = () => {
   const renderModalContent = () => {
     if (modalContent === 'Settings') {
       return <Settings thermostat={thermostat} setThermostat={setThermostat} />
+    } else if (modalContent === 'Schedule') {
+      return <Scheduler celsius={celsius} />
     } else if (modalContent === 'Thermostat History') {
       return (
         <Timeline
@@ -179,6 +182,13 @@ const Temperature = () => {
               },
             },
             { key: 'Switch Unit', onClick: () => setCelsius(!celsius) },
+            {
+              key: 'Schedule',
+              onClick: () => {
+                setModalContent('Schedule')
+                modalCmdRef.current.modal('Schedule')
+              },
+            },
             {
               key: 'Settings',
               onClick: () => {

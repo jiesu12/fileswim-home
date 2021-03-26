@@ -1,0 +1,133 @@
+.temperature-scheduler {
+  .daily-schedule {
+    display: flex;
+    align-items: center;
+    margin: 5px;
+    padding-bottom: 10px;
+
+    .week-day-name {
+      font-weight: 400;
+      width: 88px;
+      cursor: pointer;
+    }
+
+    .temperatures-at-time {
+      width: 720px;
+      height: 20px;
+      background-color: lightblue;
+      cursor: pointer;
+      position: relative;
+
+      .temperature-at-time {
+        position: absolute;
+        border-radius: 15px;
+        padding: 3px;
+        background-color: aquamarine;
+        line-height: 15px;
+        font-size: 14px;
+        cursor: pointer;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .day-time-line {
+    width: 720px;
+    height: 20px;
+    margin-left: 93px;
+    position: relative;
+    div {
+      position: absolute;
+      top: 0px;
+      font-size: 0.6rem;
+      margin-left: -10px;
+    }
+    .am1 {
+      left: 30px;
+    }
+    .am2 {
+      left: 60px;
+    }
+    .am3 {
+      left: 90px;
+    }
+    .am4 {
+      left: 120px;
+    }
+    .am5 {
+      left: 150px;
+    }
+    .am6 {
+      left: 180px;
+    }
+    .am7 {
+      left: 210px;
+    }
+    .am8 {
+      left: 240px;
+    }
+    .am9 {
+      left: 270px;
+    }
+    .am10 {
+      left: 300px;
+    }
+    .am11 {
+      left: 330px;
+    }
+    .noon {
+      left: 360px;
+    }
+    .pm1 {
+      left: 390px;
+    }
+    .pm2 {
+      left: 420px;
+    }
+    .pm3 {
+      left: 450px;
+    }
+    .pm4 {
+      left: 480px;
+    }
+    .pm5 {
+      left: 510px;
+    }
+    .pm6 {
+      left: 540px;
+    }
+    .pm7 {
+      left: 570px;
+    }
+    .pm8 {
+      left: 600px;
+    }
+    .pm9 {
+      left: 630px;
+    }
+    .pm10 {
+      left: 660px;
+    }
+    .pm11 {
+      left: 690px;
+    }
+  }
+}
+
+.schedule-temp-time-editor {
+  width: 818px;
+  height: 293px;
+
+  .btn-panel {
+    display: flex;
+  }
+}
+
+.schedule-copy-editor {
+  width: 818px;
+  height: 293px;
+
+  .btn-panel {
+    display: flex;
+  }
+}

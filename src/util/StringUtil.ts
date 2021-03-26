@@ -2,6 +2,8 @@ const MINUTE = 60
 const HOUR = 60 * 60
 const DAY = 60 * 60 * 24
 
+export const TEMPERATURE_PATTERN = /^\d{0,2}$/
+
 export const toSnakeCase = (s: string): string =>
   s.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)
 
@@ -33,4 +35,17 @@ export const timePeriodToStr = (timePeriod: number): string => {
 export const timestampToPeriod = (timestamp: number): string => {
   const now = new Date().getTime()
   return timePeriodToStr(Math.floor(now / 1000) - timestamp)
+}
+
+export const isNumberKey = (evt: any) => {
+  const charCode = evt.which ? evt.which : evt.keyCode
+  if (
+    charCode != 190 &&
+    charCode != 37 &&
+    charCode != 39 &&
+    charCode != 8 &&
+    (charCode < 48 || charCode > 57)
+  ) {
+    evt.preventDefault()
+  }
 }
