@@ -49,3 +49,7 @@ export const isNumberKey = (evt: any) => {
     evt.preventDefault()
   }
 }
+
+export const getTimeWithPadding = (time: number): string => {
+  return time < 10 ? '0' + time : '' + time
+}

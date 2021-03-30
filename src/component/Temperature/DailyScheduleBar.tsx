@@ -2,6 +2,7 @@ import * as React from 'react'
 import { WeekDayNames, Editing } from './Scheduler'
 import { DailySchedule, TemperatureAtTime } from '../../api/dto'
 import { toFahrenheit } from '../../util/temperatureUtil'
+import { getTimeWithPadding } from '../../util/StringUtil'
 
 const PX_PER_SEC = 720 / (3600 * 24)
 
@@ -40,6 +41,12 @@ const DailyScheduleBar = ({
     showTempTimeEditor(editing)
   }
 
+  const getTitle = (tt: TemperatureAtTime) => {
+    const hour = Math.floor(tt.seconds_of_day / 3600)
+    const minute = (tt.seconds_of_day % 3600) / 60
+    return `${getTimeWithPadding(hour)}:${getTimeWithPadding(minute)}`
+  }
+
   const renderTempTime = (tt: TemperatureAtTime) => {
     return (
       <div
@@ -47,7 +54,7 @@ const DailyScheduleBar = ({
         key={tt.seconds_of_day}
         style={{ left: Math.floor(PX_PER_SEC * tt.seconds_of_day) + 'px' }}
         onClick={(e) => editTempTime(tt, e)}
-        title={`${Math.floor(tt.seconds_of_day / 3600)}:${(tt.seconds_of_day % 3600) / 60}`}
+        title={getTitle(tt)}
       >
         {celsius ? tt.temperature : toFahrenheit(tt.temperature)}
       </div>

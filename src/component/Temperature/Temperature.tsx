@@ -213,7 +213,9 @@ const Temperature = () => {
           setterMode={setterMode}
           setSetterMode={setSetterMode}
         />
-        <ScheduleSwitch useSchedule={thermostat.use_schedule} setThermostat={setThermostat} />
+        {thermostat.current_mode !== 'Off' && (
+          <ScheduleSwitch useSchedule={thermostat.use_schedule} setThermostat={setThermostat} />
+        )}
         <ModeSelector
           setterMode={setterMode}
           thermostat={thermostat}
