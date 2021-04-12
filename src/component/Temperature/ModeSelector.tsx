@@ -3,7 +3,9 @@ import Modal, { ModalCommands } from '@jiesu12/react-modal'
 import * as React from 'react'
 import { Thermostat, THERMOSTAT_URL } from './Temperature'
 
-const MODES = ['Cool', 'Heat', 'Off']
+export const OFF_MODE = 'off'
+
+const MODES = ['cool', 'heat', OFF_MODE]
 
 interface Props {
   thermostat: Thermostat
@@ -14,8 +16,8 @@ interface Props {
 const ModeSelector = ({ thermostat, setThermostat, setterMode }: Props) => {
   const modalCmdRef = React.useRef<ModalCommands>(null)
   const handleSelect = (mode: string) => {
-    modalCmdRef.current.confirm(`Swtich to ${mode} mode?`, () => {
-      postJson(`${THERMOSTAT_URL}/mode/${mode.toLowerCase()}`).then(setThermostat)
+    modalCmdRef.current.confirm(`Switch to ${mode} mode?`, () => {
+      postJson(`${THERMOSTAT_URL}/mode/${mode}`).then(setThermostat)
     })
   }
   return (
@@ -28,7 +30,7 @@ const ModeSelector = ({ thermostat, setThermostat, setterMode }: Props) => {
           onClick={() => handleSelect(mode)}
           disabled={thermostat.target_mode === mode || setterMode}
         >
-          {mode}
+          {mode.charAt(0).toUpperCase() + mode.slice(1)}
         </button>
       ))}
     </div>

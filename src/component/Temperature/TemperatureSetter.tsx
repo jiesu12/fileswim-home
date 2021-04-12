@@ -7,6 +7,7 @@ import Cross from '../icons/Cross'
 import UpArrow from '../icons/UpArrow'
 import DownArrow from '../icons/DownArrow'
 import { isNumberKey, TEMPERATURE_PATTERN } from '../../util/StringUtil'
+import { OFF_MODE } from './ModeSelector'
 
 interface Props {
   celsius: boolean
@@ -26,7 +27,7 @@ const TemperatureSetter = ({
   const [newTemp, setNewTemp] = React.useState<string>(null) // use string to avoid long float number
 
   const isOffMode = () => {
-    return thermostat.current_mode === 'Off'
+    return thermostat.current_mode === OFF_MODE
   }
 
   const handleInputChange = (e: any) => {
