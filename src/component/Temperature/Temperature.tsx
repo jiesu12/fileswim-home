@@ -6,7 +6,7 @@ import Operation from '../icons/Operation'
 import Stop from '../icons/Stop'
 import Timeline from '../Timeline/Timeline'
 import CurrentTemperature from './CurrentTemperature'
-import ModeSelector from './ModeSelector'
+import ModeSelector, { OFF_MODE } from './ModeSelector'
 import './Temperature.scss'
 import TemperatureHistory from './TemperatureHistory'
 import TemperatureSetter from './TemperatureSetter'
@@ -123,7 +123,7 @@ const Temperature = () => {
   }
 
   const isOffMode = () => {
-    return thermostat.current_mode === 'Off'
+    return thermostat.current_mode === OFF_MODE
   }
 
   const renderRunStatus = () => {
@@ -213,7 +213,7 @@ const Temperature = () => {
           setterMode={setterMode}
           setSetterMode={setSetterMode}
         />
-        {thermostat.current_mode !== 'Off' && (
+        {thermostat.current_mode !== OFF_MODE && (
           <ScheduleSwitch useSchedule={thermostat.use_schedule} setThermostat={setThermostat} />
         )}
         <ModeSelector

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { renderTemperature } from '../../util/temperatureUtil'
 import { Thermostat } from './Temperature'
+import { OFF_MODE } from './ModeSelector'
 
 interface Props {
   thermostat: Thermostat
@@ -11,7 +12,7 @@ const toPixel = (t: number): number => t * 30
 
 const CurrentTemperature = ({ thermostat, celsius }: Props) => {
   const getTemperatureOffset = (): number => {
-    if (thermostat.current_mode === 'Off') {
+    if (thermostat.current_mode === OFF_MODE) {
       return 0
     } else {
       return thermostat.target_temperature - thermostat.current_temperature
