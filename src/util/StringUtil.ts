@@ -13,6 +13,8 @@ export const toCamelCase = (s: string): string =>
     .replace(/_([a-z])/g, (m) => m.toUpperCase())
     .replace(/_/g, '')
 
+export const capitalize = (s: string): string => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s)
+
 export const timePeriodToStr = (timePeriod: number): string => {
   let diff = timePeriod
   const days = Math.floor(diff / DAY)

@@ -14,6 +14,7 @@ import Modal, { ModalCommands } from '@jiesu12/react-modal'
 import Settings from './Settings'
 import Scheduler from './Scheduler'
 import ScheduleSwitch from './ScheduleSwitch'
+import { capitalize } from '../../util/StringUtil'
 
 export const THERMOSTAT_URL = 'https://thermostat.javaswim.com'
 
@@ -203,7 +204,7 @@ const Temperature = () => {
         />
         <CurrentTemperature thermostat={thermostat} celsius={celsius} />
         <div className='thermostat-status'>
-          <div className='current-mode'>{thermostat.current_mode}</div>
+          <div className='current-mode'>{capitalize(thermostat.current_mode)}</div>
           <div className={`run-status ${thermostat.current_status}`}>{renderRunStatus()}</div>
         </div>
         <TemperatureSetter

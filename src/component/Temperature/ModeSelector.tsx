@@ -2,6 +2,7 @@ import { postJson } from '@jiesu12/fileswim-api'
 import Modal, { ModalCommands } from '@jiesu12/react-modal'
 import * as React from 'react'
 import { Thermostat, THERMOSTAT_URL } from './Temperature'
+import { capitalize } from '../../util/StringUtil'
 
 export const OFF_MODE = 'off'
 
@@ -30,7 +31,7 @@ const ModeSelector = ({ thermostat, setThermostat, setterMode }: Props) => {
           onClick={() => handleSelect(mode)}
           disabled={thermostat.target_mode === mode || setterMode}
         >
-          {mode.charAt(0).toUpperCase() + mode.slice(1)}
+          {capitalize(mode)}
         </button>
       ))}
     </div>
