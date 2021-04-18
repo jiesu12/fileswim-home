@@ -1,19 +1,21 @@
 import { getJson, postJson } from '@jiesu12/fileswim-api'
 import DropdownMenu from '@jiesu12/react-dropdown-menu'
 import * as React from 'react'
-import { GarageStatus } from '../../api/dto'
+import { GarageStatus, GarageAlertStatus } from '../../api/dto'
 import './Garage.scss'
 import Timeline from '../Timeline/Timeline'
 import Modal, { ModalCommands } from '@jiesu12/react-modal'
 
 const Garage = () => {
   const [status, setStatus] = React.useState<GarageStatus>(null)
+  const [alertStatus, setAlertStatus] = React.useState<GarageAlertStatus>(null)
   const [history, setHistory] = React.useState<GarageStatus[]>([])
   const [showCam, setShowCam] = React.useState<boolean>(false)
   const modalCmdRef = React.useRef<ModalCommands>(null)
 
   React.useEffect(() => {
     retrieveStatus()
+    retrieveAlertStatus()
     const interval = setInterval(retrieveStatus, 5000)
     return () => clearInterval(interval)
     // re-create interval when status changes, so that the new status is in retrieveStatus closure.
@@ -28,12 +30,22 @@ const Garage = () => {
     })
   }
 
+  const retrieveAlertStatus = () => {
+    getJson('https://garage.javaswim.com/alert').then((s: GarageAlertStatus) => {
+      setAlertStatus(s)
+    })
+  }
+
   if (status === null) {
     return null
   }
 
   const handleShowCam = () => {
     setShowCam(!showCam)
+  }
+
+  const handleAlert = () => {
+    postJson('https://garage.javaswim.com/alert').then((a: GarageAlertStatus) => setAlertStatus(a))
   }
 
   const handleDoorSwitch = () => {
@@ -98,6 +110,7 @@ const Garage = () => {
             ),
             onClick: null,
           },
+          { key: 'Alert', onClick: handleAlert },
         ]}
       />
       <div className='title'>Garage door is</div>
@@ -109,6 +122,7 @@ const Garage = () => {
           Door Button
         </button>
       </div>
+      {alertStatus && <div>{`Alert is ${alertStatus.alert ? 'Off' : 'On'}`}</div>}
       {showCam && renderCam()}
     </div>
   )

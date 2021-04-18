@@ -3,6 +3,10 @@ export interface GarageStatus {
   timestamp: number
 }
 
+export interface GarageAlertStatus {
+  alert: boolean
+}
+
 export interface TemperatureStatus {
   temperature: number
   humidity: number
