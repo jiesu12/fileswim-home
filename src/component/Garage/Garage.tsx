@@ -122,7 +122,7 @@ const Garage = () => {
           Door Button
         </button>
       </div>
-      {alertStatus && <div>{`Alert is ${alertStatus.alert ? 'Off' : 'On'}`}</div>}
+      {alertStatus && <div>{`Alert is ${alertStatus.alert ? 'On' : 'Off'}`}</div>}
       {showCam && renderCam()}
     </div>
   )
