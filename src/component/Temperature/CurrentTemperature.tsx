@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { renderTemperature } from '../../util/temperatureUtil'
 import { Thermostat } from './Temperature'
-import { OFF_MODE } from './ModeSelector'
+import { OFF_MODE, HEAT_MODE, COOL_MODE } from './ModeSelector'
 
 interface Props {
   thermostat: Thermostat
@@ -39,15 +39,28 @@ const CurrentTemperature = ({ thermostat, celsius }: Props) => {
         <span className='room'>{thermostat.room}</span>
       </div>
       <div className='temperature-line temperature-solid-line' />
-      <div
-        className='temperature-line temperature-buffer-line'
-        style={{
-          top: `${149 - toPixel(thermostat.over_buffer_temperature)}px`,
-          height: `${toPixel(
-            thermostat.over_buffer_temperature + thermostat.under_buffer_temperature
-          )}px`,
-        }}
-      />
+      {thermostat.current_mode === HEAT_MODE && (
+        <div
+          className='temperature-line temperature-buffer-line'
+          style={{
+            top: `${149 - toPixel(thermostat.over_buffer_temperature)}px`,
+            height: `${toPixel(
+              thermostat.over_buffer_temperature + thermostat.under_buffer_temperature
+            )}px`,
+          }}
+        />
+      )}
+      {thermostat.current_mode === COOL_MODE && (
+        <div
+          className='temperature-line temperature-buffer-line'
+          style={{
+            top: `${149 - toPixel(thermostat.under_buffer_temperature)}px`,
+            height: `${toPixel(
+              thermostat.over_buffer_temperature + thermostat.under_buffer_temperature
+            )}px`,
+          }}
+        />
+      )}
       <div className='target-temperature-pointer' />
     </div>
   )

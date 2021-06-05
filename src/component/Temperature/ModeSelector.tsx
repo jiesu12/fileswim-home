@@ -5,8 +5,10 @@ import { Thermostat, THERMOSTAT_URL } from './Temperature'
 import { capitalize } from '../../util/StringUtil'
 
 export const OFF_MODE = 'off'
+export const HEAT_MODE = 'heat'
+export const COOL_MODE = 'cool'
 
-const MODES = ['cool', 'heat', OFF_MODE]
+const MODES = [COOL_MODE, HEAT_MODE, OFF_MODE]
 
 interface Props {
   thermostat: Thermostat
